@@ -1,0 +1,32 @@
+
+\\Installing Spark 2.1.1
+\\桌面上的.o之类的是64位Hadoop native lib，暂时先不要动，弄好了会删掉
+\\在../fengkai里下了一份Tencent/angel，不知道好不好用。。
+\\/home/hadoop/source/hadoop/etc/hadoop/masters 内容从hadoop2改为hadoop1，因为从其他配置看，hadoop1是master结点
+\\/home/hadoop/source/hadoop/etc/hadoop/yarn-site.xml 中yarn.resourcemanager.address的值改为192.168.111.1:8032（从192.168.111.1:8040）
+\\现在，运行hadoop程序时，貌似不会有org.apache.hadoop.ipc.RpcNoSuchProtocolException: Unknown protocol: org.apache.hadoop.yarn.api.ApplicationClientProtocolPB异常
+测试使用的是hadoop自带示例，分别是：
+hadoop jar /home/fengkai/hadoop-2.4.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.4.0.jar wordcount /input /outputTest
+hadoop jar /home/fengkai/hadoop-2.4.0/share/hadoop/mapreduce/hadoop-mapreduce-examples-2.4.0.jar pi 100 10000
+例子是重新下载的。。原来并没有。。
+\\算pi的那个，有时不能成功运行结束，可能是时钟同步的问题。。
+查明是内存不足导致的，修改了内存分配后可以正常运行了，但是重现时没有成功，这次以及之后的尝试都卡死在UNASSIGNED状态
+
+\\修复了原来hadoop4不能免密钥登陆的问题
+\\服务器上原本就有spark 1.4.1，但是好像是单机版的。。
+\\手动kill了原先已经不受控制的dataNode，NameNode（因为namespaceID和clusterID的综合错误）。删除了原先的tmp目录，hdfs目录，重新格式化了hdfs，现在应该可以正常运行了
+\\各位最好自己尝试一下Hadoop。。
+在使用时，最好不要用过时的start-all.sh和stop-all.sh，应使用start-dfs.sh和start-yarn.sh
+
+\\mongodb的配置情况：hadoop3正常，hadoop2有，但是不能使用，hadoop1、hadoop4、hadoop5没有
+\\在hadoop3、hadoop4、hadoop5上完成了zookeeper配置，运行；取代了之前存在的不知道是否正常的Hbase下zookeeper，现在是独立运行的zookeeper
+端口号分别改为了2182、2887、3887，已解决端口占用问题
+
+\\解决了Spark和hdfs关于namenode的端口号不一致的问题，现在统一使用8020端口
+\\现在在yarn上的Spark还不能正常运行，貌似是因为一旦出现了网络连接错误，就会关掉整个任务，Hadoop也会遇到（可能）大量网络连接错误，但是会不断尝试
+\\使用集群上的Spark前，在hadoop1上到Spark目录下的sbin目录中运行start-all.sh，使用stop-all.sh终止Spark服务
+
+\\问题似乎解决了；问题应该是因为Spark找不到yarn配置文件导致的(以及原先缺少spark-defaults.conf文件)
+\\尝试时可以使用spark-submit --jars /home/hadoop/source/spark-1.4.1-bin-hadoop2.4/lib/spark-assembly-1.4.1-hadoop2.4.0.jar --class org.apache.spark.examples.SparkPi --master yarn-client /home/hadoop/source/spark-1.4.1-bin-hadoop2.4/lib/spark-examples*.jar 10            10可以用其他数值替换
+\\如果想在集群上使用shell，启动时使用spark-shell --master yarn，启动的时间有点长，需要等待一会儿。。
+\\我在考虑是否需要出一个配置说明；还有，看来是必须学习一下scala
