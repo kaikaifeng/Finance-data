@@ -1,0 +1,50 @@
+//spark on yarn启动
+spark-shell --master yarn-client
+
+//TAQ数据已放入hdfs,路径为 test/TAQ/SHL2_TAQ_*.csv(注意第一个test前面没有/)
+//数据放入hdfs耗时较长
+
+//Spark-shell读取文件和scala操作
+//通过spark-shell运行，SparkContext已被初始化且作为sc提供，可直接使用
+//但如果编写scala工程进行操作，需要初始化SparkContext
+
+val rdd = sc.textFile("test/TAQ/SHL2_TAQ_[0~5]*",5)	//scala支持正则，这里示例取出前一半,第二个参数设置最小分区数，
+rdd.count
+rdd.first
+val data = rdd.filter(!_.contains("msg"))	//过滤掉所有属性字段，只保留数据
+case class MatchData(				//构造类结构化数据
+	msgseqid:Int,		securityid:Int,		trddate:Int,		datatimestamp:Int,
+	preclosepx:Float,	openpx:Float,		highpx:Float,		lowpx:Float,	
+	lastpx:Float,		instrustatus:String,	noofferlvl:Int,	s10:Float,	s09:Float,	s08:Float,	s07:Float,	s06:Float,	s05:Float,	s04:Float,	s03:Float,	s02:Float,	s01:Float,	b01:Float,	b02:Float,	b03:Float,	b04:Float,	b05:Float,	b06:Float,	b07:Float,	b08:Float,	b09:Float,	b10:Float,	nobidlvl:Int,	sv10:Int,	sv09:Int,	sv08:Int,	sv07:Int,	sv06:Int,	sv05:Int,	sv04:Int,	sv03:Int,	sv02:Int,	sv01:Int,	bv01:Int,	bv02:Int,	bv03:Int,	bv04:Int,	bv05:Int,	bv06:Int,	bv07:Int,	bv08:Int,	bv09:Int,	bv10:Int,	numtrades:Int,	totalvolume:Int,	turnover:Float,	totalbidqty:Int,	wavgbidpx:Int,	altwavgbidpx:Float,	totalofferqty:Int,	wavgofferpx:Int,	altwavgofferpx:Float,	iopv:Int,	ytm:Int,	warntexecqty:Int,	warlowerpx:Int,	warupperpx:Int,	timestamp:Int,	unix:long	market:String
+
+)
+
+def parse(line:String) = {
+	val pieces = line.split(",")
+	val msgseqid = pieces(0).toInt
+	............
+	MatchData(msgseqid,....)	//实例化对象
+}
+
+
+val parsed = data.map(line => parse(line))
+//元素访问
+
+val d = parsed.collect	//由rdd类型转为数组，可以通过下标访问
+d(0).s01 	//第一条数据的卖1价格
+
+val grouped = parsed.groupBy(x => x.securityid)	//根据股票名聚合
+grouped.mapValues(x => x.size)	//计数
+grouped.toSeq.sortBy(_._1)	//根据第一个属性升序
+grouped.toSeq.reverse.sortBy(_._2)	//根据第二个属性降序
+
+//map,mapValues,flatMap
+元素映射，针对[key，value]数据的值进行映射，映射后展平
+
+//至此，将数据从字符串类型预处理为需要的Int，Double，Float类型，可以进行各种计算，统计
+//但没有明确目标，暂不知道需要拿数据做些什么
+//scala编程不可能一直用shell，后续根据需要安装IDEA
+//25GB数据，count运行时间 100S左右，其他涉及I/O的操作时间在10Min以内
+//运行log发现，始终只是用hadoop4/5，没有使用2，3；
+//结合webUI  hadoop1:8080 , hadoop1:18088
+发现hadoop4，5的container分别为1，2，而hadoop2，3的container为0，但均为已用0，可用40GB
