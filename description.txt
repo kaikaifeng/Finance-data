@@ -1,0 +1,160 @@
+\\yarn-site.xml
+<property>
+        <name>yarn.resourcemanager.hostname</name>
+        <value>192.168.111.1</value>
+	<describe>For each rm-id, specify the hostname the RM corresponds to. Alternately, one could set each of the RM’s service addresses. </describe>
+</property>
+
+<property>
+    	<name>yarn.resourcemanager.resource-tracker.address</name>
+     	<value>192.168.111.1:8025</value>
+	<describe>NodeManager连接ResourceManager的地址<describe>
+	<describe>For each rm-id, specify host:port for NodeManagers to connect. If set, overrides the hostname set in yarn.resourcemanager.hostname.rm-id. </describe>
+</property>
+
+<property>
+      	<name>yarn.resourcemanager.scheduler.address</name>
+      	<value>192.168.111.1:8030</value>
+	<describe>ApplicationMasters从ResourceManager获取资源的地址<describe>
+	<describe>For each rm-id, specify scheduler host:port for ApplicationMasters to obtain resources. If set, overrides the hostname set in yarn.resourcemanager.hostname.rm-id. </describe>
+</property>
+
+<property>
+      	<name>yarn.resourcemanager.scheduler.class</name>
+      	<value>org.apache.hadoop.yarn.server.resourcemanager.scheduler.capacity.CapacityScheduler</value>
+	<describe>启用的资源调度器主类，比较重要的可能是Capacity Scheduler和Fair Scheduler
+	CapacityScheduler的特点：
+	资源按比例分配给各个队列，并添加各种严格的限制防止个别用户或者队列独占资源
+	不支持负载均衡
+	Container请求资源粒度为最小资源量的整数倍（粒度粗）
+	更多描述：http://hadoop.apache.org/docs/r2.7.2/hadoop-yarn/hadoop-yarn-site/CapacityScheduler.html
+	</describe>
+</property>
+
+<property>
+      	<name>yarn.resourcemanager.address</name>
+      	<value>192.168.111.1:8032</value>
+	<describe>客户端通过这个地址提交任务</describe>
+	<describe>For each rm-id, specify host:port for clients to submit jobs. If set, overrides the hostname set in yarn.resourcemanager.hostname.rm-id. </describe>
+</property>
+
+<property>
+       	<name>yarn.nodemanager.local-dirs</name>
+       	<value>${hadoop.tmp.dir}/nodemanager/local</value>
+	<describe>中间结果存放位置，类似于1.0中的mapred.local.dir。注意，这个参数通常会配置多个目录，已分摊磁盘IO负载。</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+       	<name>yarn.nodemanager.address</name>
+       	<value>0.0.0.0:8034</value>
+	<describe>用于重启</describe>
+	<describe>Ephemeral ports (port 0, which is default) cannot be used for the NodeManager’s RPC server specified via yarn.nodemanager.address as it can make NM use different ports before and after a restart. This will break any previously running clients that were communicating with the NM before restart. Explicitly setting yarn.nodemanager.address to an address with specific port number (for e.g 0.0.0.0:45454) is a precondition for enabling NM restart. </describe>
+</property>
+
+<property>
+       	<name>yarn.nodemanager.remote-app-log-dir</name>
+       	<value>${hadoop.tmp.dir}/nodemanager/remote</value>
+	<describe>当应用程序运行结束后，日志被转移到的HDFS目录（启用日志聚集功能时有效）</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+       	<name>yarn.nodemanager.log-dirs</name>
+       	<value>${hadoop.tmp.dir}/nodemanager/logs</value>
+	<describe>日志存放地址（可配置多个目录）</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.nodemanager.aux-services</name>
+        <value>mapreduce_shuffle</value>
+	<describe>NodeManager上运行的附属服务。需配置成mapreduce_shuffle，才可运行MapReduce程序</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.nodemanager.aux-services.mapreduce.shuffle.class</name>
+        <value>org.apache.hadoop.mapred.ShuffleHandler</value>
+	<describe>运行mapreduce需要的类？？？</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.resourcemanager.webapp.address</name>
+        <value>192.168.111.1:18088</value>
+	<describe>ResourceManager对外web ui地址。用户可通过该地址在浏览器中查看集群各类信息</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.resourcemanager.admin.address</name>
+        <value>192.168.111.1:18141</value>
+	<describe>ResourceManager 对管理员暴露的访问地址。管理员通过该地址向RM发送管理命令等。</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.nodemanager.pmem-check-enabled</name>
+        <value>false</value>
+	<describe>是否启动一个线程检查每个任务正使用的物理内存量，如果任务超出分配值，则直接将其杀掉，默认是true</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.nodemanager.vmem-check-enabled</name>
+        <value>false</value>
+	<describe>虚拟内存检查，默认为true</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.nodemanager.resource.memory-mb</name>
+        <value>40960</value>
+	<describe>声明的NodeManager总的可用物理内存，注意，是“声明的”，即即使实际没有这么多可用内存，也会按照这个数值使用，web ui中显示的40GB的来源
+	</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapred.tasktracker.map.tasks.maximum</name>
+        <value>30</value>
+	<describe>单台机器上并发的map任务数量，据称设置为cpu数目或者cpu数目 - 1最佳</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.scheduler.minimum-allocation-mb</name>
+        <value>256</value>
+	<describe>单个任务可申请的最小内存资源量</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.scheduler.maximum-allocation-mb</name>
+        <value>8192</value>
+	<describe>单个任务可申请的最大内存资源量</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>yarn.nodemanager.vmem-pmem-ratio</name>
+        <value>2.1</value>
+	<describe>任务每使用1MB物理内存，最多可使用虚拟内存量，默认是2.1</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
