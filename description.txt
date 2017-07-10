@@ -304,7 +304,7 @@ SecondNameNode会将当前最新的fsimage数据归档到previous.checkpoint文�
         <value>4096</value>
 	<describe>
 	每个Map Task需要的内存量
-	mapreduce.map.memory.mb是向RM申请的内存资源大小，这些资源可用用于各种程序语言编写的程序, mapred.map.child.java.opts 一般只用于配置JVM参数
+	mapreduce.map.memory.mb是向RM申请的内存资源大小，这些资源可用用于各种程序语言编写的程序, mapred.map.child.java.opts一般只用于配置JVM参数
 	</describe>
 	<describe>Haven't found the original description</describe>
 </property>
