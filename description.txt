@@ -144,6 +144,142 @@
 	<describe>Haven't found the original description</describe>
 </property>
 
+\\hdfs-site.xml
+<property>
+        <name>dfs.replication</name>
+        <value>2</value>
+	<describe>上传到hdfs的文件创建的副本数量</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>dfs.namenode.name.dir</name>
+        <value>/home/hadoop/hdfs/name</value>
+        <final>true</final>
+	<describe>NameNode上存放元数据的目录</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>dfs.datanode.data.dir</name>
+        <value>/home/hadoop/hdfs/data</value>
+        <final>true</final>
+	<describe>真正的datanode数据保存路径，可以写多块硬盘，逗号分隔.把这些位置分散在每个节点上的所有磁盘上可以实现磁盘 I/O 平衡，因此会显著改进磁盘 I/O 性能。</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>dfs.datanode.max.xcievers</name>
+        <value>300000</value>
+	<describe>相当于linux下的打开文件最大数量，文档中无此参数，当出现DataXceiver报错的时候，需要调大。默认256</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>hadoop.tmp.dir</name>
+        <value>/home/hadoop/tmp</value>
+	<describe>There're three HDFS properties which contain hadoop.tmp.dir in their values dfs.name.dir: directory where namenode stores its metadata, with default value ${hadoop.tmp.dir}/dfs/name. dfs.data.dir: directory where HDFS data blocks are stored, with default value ${hadoop.tmp.dir}/dfs/data.fs.checkpoint.dir: directory where secondary namenode store its checkpoints, default value is ${hadoop.tmp.dir}/dfs/namesecondary.This is why you saw the /mnt/hadoop-tmp/hadoop-${user.name} in your HDFS after formatting namenode.</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+	<name>dfs.http.address</name>
+	<value>hadoop1:50070</value>
+	<description>
+	The address and the base port where the dfs namenode web ui will listen on.
+	If the port is 0 then the server will start on a free port.
+	</description>
+	<describe>hdfs的web ui地址</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+	<name>dfs.namenode.secondary.http-address</name>
+	<value>hadoop2:50090</value>
+	<describe>Secondary NameNode的web ui地址</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+\\core-site.xml
+<property>
+        <name>hadoop.tmp.dir</name>
+        <value>/home/hadoop/tmp</value>
+	<describe>临时文件夹，指定后需将使用到的所有子级文件夹都要手动创建出来，否则无法正常启动服务（这里是正确的配置位置）</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>fs.defaultFS</name>
+        <value>hdfs://192.168.111.1:8020</value>
+	<describe>hadoop访问目录节点nameNode的地址</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>hadoop.proxyuser.root.hosts</name>
+        <value>192.168.111.1</value>
+	<describe>该参数表示可以通过httpfs接口hdfs的ip地址限制（应该没特别大作用）</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>hadoop.proxyuser.root.groups</name>
+        <value>*</value>
+	<describe>通过httpfs接口访问的用户获得的群组身份在两个参数中，第三位（root）的参数表示启动hadoop集群的用户。</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>io.file.buffer.size</name>
+        <value>131072</value>
+	<describe>用作序列化文件处理时读写buffer的大小</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>hadoop.proxyuser.hduser.hosts</name>
+        <value>*</value>
+	<describe>见上</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+<property>
+        <name>hadoop.proxyuser.hduser.groups</name>
+        <value>*</value>
+	<describe>见上</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>fs.checkpoint.period</name>
+        <value>3600</value>
+        <description>The number of seconds between two periodic checkpoints.
+        </description>
+	<describe>用来控制SecondNameNode的checkpoint时间间隔的。
+如果距离上次checkpoint的时间大于fs.checkpoint.period参数所指定的时间，那么就会触发checkpoint事件。
+SecondNameNode会将当前最新的fsimage数据归档到previous.checkpoint文件夹中</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>fs.checkpoint.size</name>
+        <value>67108864</value>
+	<describe>
+	以日志大小间隔做备份间隔，只对SNN生效
+	git commit: AMBARI-4437. fs.checkpoint.size is deprecated in HDP2, should be replaced by dfs.namenode.checkpoint.txns
+	</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
