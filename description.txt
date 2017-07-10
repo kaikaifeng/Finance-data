@@ -270,6 +270,45 @@ SecondNameNode会将当前最新的fsimage数据归档到previous.checkpoint文�
 	<describe>Haven't found the original description</describe>
 </property>
 
+\\mapred-site.xml
+<property>
+        <name>mapreduce.framework.name</name>
+        <value>yarn</value>
+	<describe>MapReduce运行在yarn集群上</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapreduce.jobhistory.address</name>
+        <value>192.168.111.1:10020</value>
+	<describe>Hadoop历史作业情况服务需要的地址</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapreduce.jobhistory.webapp.address</name>
+        <value>192.168.111.1:19888</value>
+	<describe>Hadoop历史作业情况web ui地址</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapred.child.java.opts</name>
+        <value>-Xmx8192m</value>
+	<describe>这个参数是配置每个map或reduce使用的内存数量，默认是200m，一般情况下，该值设置为 总内存/并发数量(=核数)</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapreduce.map.memory.mb</name>
+        <value>4096</value>
+	<describe>
+	每个Map Task需要的内存量
+	mapreduce.map.memory.mb是向RM申请的内存资源大小，这些资源可用用于各种程序语言编写的程序, mapred.map.child.java.opts 一般只用于配置JVM参数
+	</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
 
 
 
