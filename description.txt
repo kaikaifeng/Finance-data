@@ -90,7 +90,7 @@
 <property>
         <name>yarn.resourcemanager.admin.address</name>
         <value>192.168.111.1:18141</value>
-	<describe>ResourceManager 对管理员暴露的访问地址。管理员通过该地址向RM发送管理命令等。</describe>
+	<describe>ResourceManager对管理员暴露的访问地址。管理员通过该地址向RM发送管理命令等。</describe>
 	<describe>Haven't found the original description</describe>
 </property>
 
