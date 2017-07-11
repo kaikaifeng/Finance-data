@@ -295,7 +295,11 @@ SecondNameNode会将当前最新的fsimage数据归档到previous.checkpoint文�
 <property>
         <name>mapred.child.java.opts</name>
         <value>-Xmx8192m</value>
-	<describe>这个参数是配置每个map或reduce使用的内存数量，默认是200m，一般情况下，该值设置为 总内存/并发数量(=核数)</describe>
+	<describe>
+	这个参数是配置每个map或reduce使用的内存数量，默认是200m，一般情况下，该值设置为 总内存/并发数量(=核数)
+	最近发现Hadoop Job集群的load非常高，最后发现是mapred.child.Java.opts设置过大导致的，我们当初设置为-Xmx5120导致TaskTracker上内存资源耗尽，进而开始不断swap磁盘上数据
+	代替以mapred.map.child.java.opts和mapred.reduce.child.java.opts
+	</describe>
 	<describe>Haven't found the original description</describe>
 </property>
 
@@ -308,6 +312,33 @@ SecondNameNode会将当前最新的fsimage数据归档到previous.checkpoint文�
 	</describe>
 	<describe>Haven't found the original description</describe>
 </property>
+
+<property>
+        <name>mapreduce.reduce.memory.mb</name>
+        <value>4096</value>
+	<describe>每个Reduce Task需要的内存量;是逻辑值，用于监控</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapreduce.map.java.opts</name>
+        <value>-Xmx6g</value>
+	<describe>
+	JVM进程堆的大小
+	因为在yarn container这种模式下，JVM进程跑在container中，mapreduce.{map|reduce}.java.opts能够通过Xmx设置JVM最大的heap的使用，一般设置为0.75倍的memory.mb，因为需要为Java code，非JVM内存使用等预留空间
+	</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+<property>
+        <name>mapreduce.reduce.java.opts</name>
+        <value>-Xmx6g</value>
+	<describe>见上</describe>
+	<describe>Haven't found the original description</describe>
+</property>
+
+
+
 
 
 
