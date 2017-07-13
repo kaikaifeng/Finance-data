@@ -33,5 +33,5 @@ hadoop jar /home/fengkai/hadoop-2.4.0/share/hadoop/mapreduce/hadoop-mapreduce-ex
 
 \\spark-shell --master yarn-client和spark-shell --master yarn没有不同，但是spark-shell --master yarn-cluster没有意义:Cluster deploy mode is not applicable to Spark shells.
 
-\\降低了spark shell的日志级别到WARN（从）INFO，如需修改，修改conf/log4j.properties中的log4j.rootCategory
-\\刚刚发现spark-env.sh中HADOOP_HOME和HADOOP_CONF_DIR的路径不正确，修改到了正确路径（/home/hadoop/source下）路径
+\\降低了spark shell的日志级别到WARN（从INFO），如需修改，修改conf/log4j.properties中的log4j.rootCategory
+\\刚刚发现spark-env.sh中HADOOP_HOME和HADOOP_CONF_DIR的路径不正确，修改到了正确路径（/home/hadoop/source下路径）
