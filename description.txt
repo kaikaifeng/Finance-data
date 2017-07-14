@@ -147,6 +147,11 @@
 	<describe>Haven't found the original description</describe>
 </property>
 
+<property>
+	<name>yarn.scheduler.maximum-allocation-vcores</name>
+	<describe>RM可以分配给一个容器的最多虚拟CPU个数，默认为32</describe>
+</property>
+
 \\hdfs-site.xml
 <property>
         <name>dfs.replication</name>
