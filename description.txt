@@ -119,7 +119,10 @@
 <property>
         <name>mapred.tasktracker.map.tasks.maximum</name>
         <value>30</value>
-	<describe>单台机器上并发的map任务数量，据称设置为cpu数目或者cpu数目 - 1最佳</describe>
+	<describe>
+	单台机器上并发的map任务数量，据称设置为cpu数目或者cpu数目 - 1最佳
+	hadoop2中以yarn.nodemanager.resource.vcore替代
+	</describe>
 	<describe>Haven't found the original description</describe>
 </property>
 
