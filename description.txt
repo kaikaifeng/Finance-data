@@ -334,6 +334,7 @@ SecondNameNode会将当前最新的fsimage数据归档到previous.checkpoint文�
 	<describe>
 	JVM进程堆的大小
 	因为在yarn container这种模式下，JVM进程跑在container中，mapreduce.{map|reduce}.java.opts能够通过Xmx设置JVM最大的heap的使用，一般设置为0.75倍的memory.mb，因为需要为Java code，非JVM内存使用等预留空间
+	这里的配置太大了
 	</describe>
 	<describe>Haven't found the original description</describe>
 </property>
