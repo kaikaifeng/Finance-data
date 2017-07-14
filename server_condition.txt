@@ -48,4 +48,5 @@ mapreduce.reduce.java.opts -Xmx6g => -Xmx3072m
 spark-default.conf:
 spark.executor.instances 15（尝试了15、50、200）应当可以通过减小内存分配提高executor数量，提高效率，目前50、200设置会引起进程的大量崩溃，这里的主要问题是各台机器都不能保证留给咱们确定大小的内存
 
--
+\\奇怪的性能下降，需要监控工具
+
