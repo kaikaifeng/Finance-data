@@ -52,3 +52,8 @@ spark.executor.instances 15（尝试了15、50、200）应当可以通过减小�
 
 \\Dell R910不支持windows server2016
 
+\\spark exector正常运行的数量目前最多达到20（通常达不到），瓶颈应是内存总量不足
+\\sql server2012中可以使用bcp导出数据，基本命令为：
+EXEC [数据库名称]..xp_cmdshell 'bcp [数据库名称].dbo.[表名] out F:\test\1.csv -c -T -S [服务器名称] -U [用户名称（管理员）]'
+具体见服务器
+
