@@ -57,3 +57,4 @@ spark.executor.instances 15（尝试了15、50、200）应当可以通过减小�
 EXEC [数据库名称]..xp_cmdshell 'bcp [数据库名称].dbo.[表名] out F:\test\1.csv -c -T -S [服务器名称] -U [用户名称（管理员）]'
 具体见服务器
 
+\\选择了一种折中的方法，用其他语言程序生成需要的SQL脚本
