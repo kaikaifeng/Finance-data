@@ -1,0 +1,1 @@
+\\python 2的cPickle和python 3的pickle不能兼容
