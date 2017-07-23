@@ -32,6 +32,10 @@
                 var column = rows[i].split(",");
                 var name = column[0];
                 var pct = column.slice(1);
+                if (pct[pct.length - 1] == "\r") {
+                    //console.log(pct[pct.length - 1]);
+                    pct[pct.length - 1] = "";
+                }
                 var dataObject = {name: name, pct: pct};
                 dataProvider.push(dataObject);
                 dataLengend.push(name);
