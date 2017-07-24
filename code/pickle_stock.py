@@ -1,5 +1,4 @@
 import cPickle as pickle
-import os
 import csv
 
 def construct_name_dic(names):

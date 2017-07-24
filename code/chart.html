@@ -10,6 +10,7 @@
         window.onload = function(){
             //console.log("!!!!!!!!!!");
             loadCSV("600000.csv");
+            loadDateCSV("time.csv");
             chart();
         }
 
@@ -42,13 +43,21 @@
             }
         }
 
+        function loadDateCSV(file) {
+            var request = new XMLHttpRequest();
+            request.open('GET', file, false);
+            request.send();
+            date = request.responseText.split(",");
+            console.log(date);
+        }
+
         function chart() {
             var myChart = echarts.init(document.getElementById('main'));
-            xArray = [];
+            //xArray = [];
             serie = [];
-            for (var i = 0 ; i < 1087; i++) {
-                xArray.push(i);
-            }
+            //for (var i = 0 ; i < 1087; i++) {
+            //    xArray.push(i);
+            //}
             for (var i = 0; i < dataProvider.length; i++) {
                 console.log(dataProvider[i].name);
                 var item = {
@@ -75,7 +84,7 @@
                 xAxis: {
                     type: 'category',
                     boundaryGap: false,
-                    data: xArray
+                    data: date
                 },
                 yAxis: {
                     type: 'value'
