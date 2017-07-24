@@ -27,7 +27,7 @@ hadoop jar /home/fengkai/hadoop-2.4.0/share/hadoop/mapreduce/hadoop-mapreduce-ex
 \\使用集群上的Spark前，在hadoop1上到Spark目录下的sbin目录中运行start-all.sh，使用stop-all.sh终止Spark服务
 
 \\问题似乎解决了；问题应该是因为Spark找不到yarn配置文件导致的(以及原先缺少spark-defaults.conf文件)
-\\尝试时可以使用spark-submit --jars /home/hadoop/source/spark-1.4.1-bin-hadoop2.4/lib/spark-assembly-1.4.1-hadoop2.4.0.jar --class org.apache.spark.examples.SparkPi --master yarn-client /home/hadoop/source/spark-1.4.1-bin-hadoop2.4/lib/spark-examples*.jar 10            10可以用其他数值替换
+\\尝试时可以使用spark-submit --jars /home/hadoop/source/spark-1.4.1-bin-hadoop2.4/lib/spark-assembly-1.4.1-hadoop2.4.0.jar --class org.apache.spark.examples.SparkPi --master yarn-client /home/hadoop/source/spark-1.4.1-bin-hadoop2.4/lib/spark-examples*.jar 10	10可以用其他数值替换
 \\如果想在集群上使用shell，启动时使用spark-shell --master yarn，启动的时间有点长，需要等待一会儿。。
 \\我在考虑是否需要出一个配置说明；还有，看来是必须学习一下scala
 
