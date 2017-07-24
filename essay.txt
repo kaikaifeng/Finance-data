@@ -1,1 +1,3 @@
-\\python 2µÄcPickleºÍpython 3µÄpickle²»ÄÜ¼æÈİ
+\\python 2çš„cPickleå’Œpython 3çš„pickleä¸èƒ½å…¼å®¹
+
+\\code\chart.htmlä¸­series.typeè®¾ä¸º'scatter'çš„æ•ˆæœå¯èƒ½æ›´å¥½
