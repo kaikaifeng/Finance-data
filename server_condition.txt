@@ -61,3 +61,11 @@ EXEC [数据库名称]..xp_cmdshell 'bcp [数据库名称].dbo.[表名] out F:\t
 
 \\服务器上直接插入硬盘是不能被识别的，必须配置RAID
 \\缺少部分SZSE300的数据
+
+\\为了运行时的稳定，将spark exector的数目减少到15
+\\提供了构建scala jar包的“最简”（没有添加其他依赖）maven配置文件code/scala_sample/pom.xml
+\\使用maven的基本方式是在pom.xml所在目录下运行指令mvn clean scala:compile package；依次完成清理、scala编译、打包；需要注意的是源程序目录结构需要满足src/main/scala
+\\打包好的jar包可以使用spark-submit提交运行，提供的例子为：
+spark-submit --master yarn-client --class com.buaa.financedata.sample.scala.Count ./target/finance-data-sample-0.0.1.jar
+在完成编译、打包的目录下使用即可
+\\spark-submit的性能暂时没有spark-shell好，可能有未发现的问题
