@@ -7,8 +7,9 @@
 <body>
     <div id = "main" style = "width: 100%; height: 700px"></div>
     <script type = "text/javascript">
-        window.onload = function(){
-            loadCSV("600016.csv");
+        window.onload = function () {
+            file = getQueryString("file")
+            loadCSV(file);
             loadDateCSV("time.csv");
             chart();
         }
@@ -65,7 +66,7 @@
                 title: {
                     left: 'center',
                     top: 'bottom',
-                    text: '600016'
+                    text: file
                 },
                 legend: {
                     top: 'top',
@@ -132,6 +133,13 @@
             };
             myChart.setOption(option);
         }
+
+        function getQueryString(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
+        }
+
     </script>
 </body>
 </html>
