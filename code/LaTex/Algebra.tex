@@ -1,0 +1,184 @@
+\documentclass[a4paper, 11pt]{article}
+
+%%%%%% 导入包 %%%%%%
+\usepackage{CJKutf8}
+\usepackage{graphicx}
+\usepackage[unicode]{hyperref}
+\usepackage{xcolor}
+\usepackage{cite}
+\usepackage{indentfirst}
+
+%%%%%% 设置字号 %%%%%%
+\newcommand{\chuhao}{\fontsize{42pt}{\baselineskip}\selectfont}
+\newcommand{\xiaochuhao}{\fontsize{36pt}{\baselineskip}\selectfont}
+\newcommand{\yihao}{\fontsize{28pt}{\baselineskip}\selectfont}
+\newcommand{\erhao}{\fontsize{21pt}{\baselineskip}\selectfont}
+\newcommand{\xiaoerhao}{\fontsize{18pt}{\baselineskip}\selectfont}
+\newcommand{\sanhao}{\fontsize{15.75pt}{\baselineskip}\selectfont}
+\newcommand{\sihao}{\fontsize{14pt}{\baselineskip}\selectfont}
+\newcommand{\xiaosihao}{\fontsize{12pt}{\baselineskip}\selectfont}
+\newcommand{\wuhao}{\fontsize{10.5pt}{\baselineskip}\selectfont}
+\newcommand{\xiaowuhao}{\fontsize{9pt}{\baselineskip}\selectfont}
+\newcommand{\liuhao}{\fontsize{7.875pt}{\baselineskip}\selectfont}
+\newcommand{\qihao}{\fontsize{5.25pt}{\baselineskip}\selectfont}
+
+%%%% 设置 section 属性 %%%%
+\makeatletter
+\renewcommand\section{\@startsection{section}{1}{\z@}%
+{-1.5ex \@plus -.5ex \@minus -.2ex}%
+{.5ex \@plus .1ex}%
+{\normalfont\sihao\CJKfamily{hei}}}
+\makeatother
+
+%%%% 设置 subsection 属性 %%%%
+\makeatletter
+\renewcommand\subsection{\@startsection{subsection}{1}{\z@}%
+{-1.25ex \@plus -.5ex \@minus -.2ex}%
+{.4ex \@plus .1ex}%
+{\normalfont\xiaosihao\CJKfamily{hei}}}
+\makeatother
+
+%%%% 设置 subsubsection 属性 %%%%
+\makeatletter
+\renewcommand\subsubsection{\@startsection{subsubsection}{1}{\z@}%
+{-1ex \@plus -.5ex \@minus -.2ex}%
+{.3ex \@plus .1ex}%
+{\normalfont\xiaosihao\CJKfamily{hei}}}
+\makeatother
+
+%%%% 段落首行缩进两个字 %%%%
+\makeatletter
+\let\@afterindentfalse\@afterindenttrue
+\@afterindenttrue
+\makeatother
+\setlength{\parindent}{2em}  %中文缩进两个汉字位
+
+
+%%%% 下面的命令重定义页面边距，使其符合中文刊物习惯 %%%%
+\addtolength{\topmargin}{-54pt}
+\setlength{\oddsidemargin}{0.63cm}  % 3.17cm - 1 inch
+\setlength{\evensidemargin}{\oddsidemargin}
+\setlength{\textwidth}{14.66cm}
+\setlength{\textheight}{24.00cm}    % 24.62
+
+%%%% 下面的命令设置行间距与段落间距 %%%%
+\linespread{1.4}
+% \setlength{\parskip}{1ex}
+\setlength{\parskip}{0.5\baselineskip}
+
+%%%% 正文开始 %%%%
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+
+%%%% 定理类环境的定义 %%%%
+\newtheorem{example}{例}             % 整体编号
+\newtheorem{algorithm}{算法}
+\newtheorem{theorem}{定理}[section]  % 按 section 编号
+\newtheorem{definition}{定义}
+\newtheorem{axiom}{公理}
+\newtheorem{property}{性质}
+\newtheorem{proposition}{命题}
+\newtheorem{lemma}{引理}
+\newtheorem{corollary}{推论}
+\newtheorem{remark}{注解}
+\newtheorem{condition}{条件}
+\newtheorem{conclusion}{结论}
+\newtheorem{assumption}{假设}
+
+%%%% 重定义 %%%%
+\renewcommand{\contentsname}{目录}  % 将Contents改为目录
+\renewcommand{\abstractname}{摘要}  % 将Abstract改为摘要
+\renewcommand{\refname}{参考文献}   % 将References改为参考文献
+\renewcommand{\indexname}{索引}
+\renewcommand{\figurename}{图}
+\renewcommand{\tablename}{表}
+\renewcommand{\appendixname}{附录}
+\renewcommand{\algorithm}{算法}
+
+
+%%%% 定义标题格式，包括title，author，affiliation，email等 %%%%
+\title{\textbf{Tensor}\\note token from \textit{Algebra} \textbf{Serge lang}}
+\author{your name\footnote{E-mail: your@email.com，Student ID: your ID}\\[2ex]
+\xiaosihao BUAA\\[2ex]
+}
+\date{Date}
+
+
+%%%% 以下部分是正文 %%%%
+\maketitle
+
+%\tableofcontents
+\newpage
+
+This part introduces the basic notions of algebra, and the main difficulty for the beginner is to absorb a reasonable vocabulary in a short time.
+None of the concepts is difficult, but there is an accumulation of new concepts which may sometimes seem heavy.\par
+To understand the next parts of the book, the reader needs to know essentially only the basic definitions of this first part. Of course, a theorem may be used later for
+some specific and isolated applications, but on the whole, we have avoided making long logic chains of interdependence.  ---\textbf{Serge Lang}
+
+Let $S$ be a set. A mapping
+\[S \times S \longrightarrow S\]
+is called a \textbf{law of composition}. If $x, y$ are elements of $S$, the image of the pair $(x, y)$ under this mapping is called their \textbf{product} under the 
+law of composition, and will be denoted by $xy$ or $x \cdot y$ or $x + y$ (only when the relation $x + y = y + x$ holds).\par
+
+Let $S$ be a set with a law of composition and $x, y, z$ are elements of $S$. If $(xy)z = x(yz)$ for all $x, y, z$ in $S$ then we say that the law of composition is
+\textbf{associative}.\par
+
+An element $\emph{e}$ of $S$ such that $\emph{e}x = x = x\emph{e}$ for all $x \in S$ is called a \textbf{unit element}
+(when the law of composition is written additively, the unit element is denoted by $0$, and is called a \textbf{zero element}).
+A unit element is unique, for we have
+\[\emph{e} = \emph{e}\emph{e}^{'} = \emph{e}^{'}\] 
+In most cases, the unit element is written $1$.\par
+
+A \textbf{monoid} is a set $G$, with a law of composition which is associative, and having a unit element.\par
+
+The product of elements of $G$ are defined inductively:
+\[\prod_{\nu = 1}^{n}x_{\nu} = (x_{1} \dots x_{n - 1})x_{n}\]
+We then have the following rule:
+\[\prod_{\mu = 1}^{m}x_{\mu} \cdot \prod_{\nu = 1}^{n}x_{m + \nu} = \prod_{\nu = 1}^{m + n}x_{\nu}\]
+We define
+\[\prod_{\nu = 0}^{0}x_{\nu} = \emph{e}\]
+As a matter of convention, we agree also that the empty product is equal to the unit element\par
+
+For a law of composition
+\[f: S \times S \longrightarrow T\]
+\textbf{Commutativity} means $f(x, y) = f(y, x)$ or $xy = yx$\par
+
+If the law of composition of $G$ is commutative, we also say that $G$ is \textbf{commutative(or abelian)}\par
+
+let $G$ be a commutative monoid, and $x_{1}, \dots, x_{n}$ elements of $G$. Let $\psi$ be a bijection of the set of integers $(1, \dots, n)$
+onto itself. Then
+\[\prod_{nu = 1}^{n}x_{\psi(\nu)} = \prod_{\nu = 1}^{n}x_{\nu}\]
+
+When $G$ is written additively, then instead of a product sign, we write the sum sign $\Sigma$.\par
+
+Let $x$ be an element of a monoid $G$. For every integer $n \geq 0$ we define $x^{n}$ to be 
+\[\prod_{1}^{n}x\]
+We obviously have $x^{n + m} = x^{n}x^{m}$ and $(x^{n})^{m} = x^{nm}$. From our preceding rules of associativity and commutativity, if $x, y$ are elements 
+of $G$ such that $xy = yx$, then $(xy)^{n} = x^{n}y^{n}$\par
+
+A \textbf{group} is a monoid, such that for every element $x \in G$ there exists an element $y \in G$ such that $xy = yx = \emph{e}$. Such an element $y$ is called an
+\textbf{inverse} for $x$. Such an inverse is unique, because
+\[y^{'} = y^{'}\emph{e} = y^{'}(xy) = (y^{'}x)y = \emph{e}y = y\]
+We denote this inverse by $x^{-1}$ or $-x$ and for any positive integer $n$, we let $x^{-n} = (x^{-1})^{n}$\par
+
+Let $G$ be a set with associative law of composition, let \emph{e} be a left unit for that law, and assume that every element has a left inverse. Then \emph{e} is a unit, and each left inverse is also an inverse.
+let $ba = e$. Then
+\[bab = \emph{e}b = b\]
+Multiplying on the left by a left inverse for $b$ yields
+\[ab = \emph{e}\]
+Furthermore,
+\[a\emph{e} = aba = \emph{e}a = a\]
+whence \emph{e} is a right unit\par
+
+Let $G, G^{'}$ be monoids. A \textbf{monoid-homomorphism} of $G$ into $G^{'}$ is a mapping $f: G \longrightarrow G^{'}$ such that $f(xy) = f(x)f(y)$ for all $x, y \in G$. If $G, G^{'}$ are groups, a \textbf{group-homomorphism} of $G$ into $G^{'}$ is simply a monoid-homomorphism.\par
+
+Let $f: G \longrightarrow G^{'}$ be a group-homomorphism. Then
+\[f(x^{-1} = f(x)^{-1})\]
+Proof:
+\[f(\emph{e}) = f(\emph{ee}) = f(\emph{e})f(\emph{e})\]
+so we get $\emph{e}^{'} = f(\emph(e))$
+\[\emph{e}^{'} = f(\emph{e}) = f(xx^{-1}) = f(x)f(x^{-1})\]
+then
+\[f(x^{-1}) = f(x)^{-1}\]
+\end{CJK}
+\end{document}
