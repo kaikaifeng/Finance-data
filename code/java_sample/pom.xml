@@ -1,0 +1,34 @@
+<project>
+	<groupId>com.buaa.financedata.sample</groupId>
+	<artifactId>finance-data-sample</artifactId>
+	<modelVersion>4.0.0</modelVersion>
+	<name>sample</name>
+	<packaging>jar</packaging>
+	<version>0.0.1</version>
+	<dependencies>
+		<dependency>
+			<groupId>org.apache.spark</groupId>
+			<artifactId>spark-core_2.10</artifactId>
+			<version>1.4.1</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<properties>
+		<java.version>1.7</java.version>
+	</properties>
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.5</version>
+					<configuration>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

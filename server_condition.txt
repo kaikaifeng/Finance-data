@@ -69,3 +69,5 @@ EXEC [数据库名称]..xp_cmdshell 'bcp [数据库名称].dbo.[表名] out F:\t
 spark-submit --master yarn-client --class com.buaa.financedata.sample.scala.Count ./target/finance-data-sample-0.0.1.jar
 在完成编译、打包的目录下使用即可
 \\spark-submit的性能暂时没有spark-shell好，可能有未发现的问题
+
+\\java程序的基本打包命令是mvn clean compile package，其他与scala基本相同
