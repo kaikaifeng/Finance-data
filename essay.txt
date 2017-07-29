@@ -11,3 +11,5 @@ ACM SIGKDD international conference on Knowledge discovery and data mining, pp 2
 \\张量还是必须从头开始学，code/LaTex/Algebra.tex是相关的笔记
 
 \\提取特征的方法似乎已经找到，最简单的尝试应是采用一种合适的聚类方法
+
+\\无监督的路子说不定真的走得通
