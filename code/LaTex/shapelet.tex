@@ -1,12 +1,15 @@
-\documentclass[a4paper, 11pt]{article}
+﻿\documentclass[a4paper, 11pt]{article}
 
 %%%%%% 导入包 %%%%%%
 \usepackage{CJKutf8}
 \usepackage{graphicx}
+\usepackage{algorithm}
+\usepackage{algorithmic}
 \usepackage[unicode]{hyperref}
 \usepackage{xcolor}
 \usepackage{cite}
 \usepackage{indentfirst}
+\usepackage{booktabs}
 
 %%%%%% 设置字号 %%%%%%
 \newcommand{\chuhao}{\fontsize{42pt}{\baselineskip}\selectfont}
@@ -72,7 +75,7 @@
 
 %%%% 定理类环境的定义 %%%%
 \newtheorem{example}{例}             % 整体编号
-\newtheorem{algorithm}{算法}
+%\newtheorem{algorithm}{算法}
 \newtheorem{theorem}{定理}[section]  % 按 section 编号
 \newtheorem{definition}{定义}
 \newtheorem{axiom}{公理}
@@ -93,7 +96,7 @@
 \renewcommand{\figurename}{图}
 \renewcommand{\tablename}{表}
 \renewcommand{\appendixname}{附录}
-\renewcommand{\algorithm}{算法}
+%\renewcommand{\algorithm}{算法}
 
 
 %%%% 定义标题格式，包括title，author，affiliation，email等 %%%%
@@ -112,22 +115,105 @@
 
 \section{shapelet——时间序列分类}
 \subsection{简单综述}
-时间序列分类问题（Time-series classification or TSC）的困难之处在于如何度量序列之间的相似性。传统的分类问题中，属性的顺序通常是不重要的；然而对于时间序列，数据的排序对于找到好的分类特征至关重要。对TSC的研究（有一部分）集中在寻找最近邻（Nearest Neighbor or NN）分类器使用的距离度量。实际上，在小数据集上，NN（虽然看上去naive）效果“很好”："There is a plethora of classification algorithms that can be applied to time series; however, all of the current empirical evidence suggests that simple nearest neighbor classification is very difficult to beat" \cite{Batista}\par
+时间序列分类问题（Time-series classification or TSC）的困难之处在于如何度量序列之间的相似性。传统的分类问题中，属性的顺序通常是不重要的；然而对于时间序列，数据的排序对于找到好的分类特征至关重要。对TSC的研究（有一部分）集中在寻找最近邻（Nearest Neighbor or NN）分类器使用的距离度量。实际上，在小数据集上，NN（虽然看上去naive）效果“很好”："There is a plethora of classification algorithms that can be applied to time series; however, all of the current empirical evidence suggests that simple nearest neighbor classification is very difficult to beat" \cite{Batista}。\par
+
+最近邻分类器适用于那种通常的时域曲线\ref{fig:fig1}。曲线的（潜在的）基本形状的变动被认为是观察时引入的噪声导致的。由噪声导致的相位变化较小。\par
+
+可以不太准确地说，最近邻以及其他关注完整曲线的方法是“全局方法”。\par
+
+\begin{figure}[htbp]
+    \small
+    \centering
+    \includegraphics[width=15cm]{2.JPG}
+    \label{fig:fig1}
+    \caption{全局匹配\cite{Hills}}
+\end{figure}
+
+\subsection{shapelet——关注局部}
+shapelet方法不直接关注时间序列的全局特征，而试图寻找序列间局部的相似性。一个shapelet的简介定义是："A shapelet is a time-series subsequence that can be used as a primitive for TSC based on \textbf{local}, phase-independent similarity in shape"\cite{Hills}\par
+
+shapelet的基本思想也并不复杂，如图\ref{fig:fig2}所示，一个shapelet应能够和训练集中的一部分时间序列的某些连续子序列匹配地很好，然而在剩余的时间序列中却不能找到匹配良好的连续子序列。\par
 
 \begin{figure}[htbp]
     \small
     \centering
     \includegraphics[width=15cm]{1.JPG}\\
+    \label{fig:fig2}
     \caption{局部匹配\cite{Lexiang}}
 \end{figure}
+
+下表\ref{tab:symbolTable}说明了将要使用的符号。\par
+
+\begin{table}[htbp]
+    \centering
+    \caption{符号表}
+        \label{tab:symbolTable}
+    \begin{tabular}{cc}
+        \toprule
+        符号 & 说明 \\
+        \midrule
+        $T, R$  &   时间序列\\
+        $S$     &   连续子序列\\
+        $m, |T|$    &   时间序列长度\\
+        $l, |S|$    &   连续子序列长度\\
+        $\mathbf{D}$    &   时间序列数据集\\
+        $A, B$  &   类别标签\\
+        $S_{{k}}$   &   $S$中的第$k$个数据点\\
+        $\mathbf{S}_{T}^{|S|}$  &   $T$的长度为$|S|$的连续子序列集合\\
+        \bottomrule
+    \end{tabular}
+\end{table}
+
+\definition ：时间序列和连续子序列的距离。以$Dist(T, R)$表示两个等长的时间序列$T, R$的距离，时间序列和连续子序列的距离$SubsequenceDist(T, S)$ 定义为：
+\[SubsequenceDist(T, S) = min(Dist(S, S^{'})), S^{'} \in \mathbf{S}_{T}^{|S|}\]\par
+
+由此可见，单纯的shapelet关注的是完全与相位无关的“形状”特征，这还不是我们想要的。\par
+
+\subsection{shapelet——分类器}
+shapelet的提出最早是用于分类的。其基本算法如下\ref{alg:algorithm}：\par
+
+\begin{algorithm}[htbp]
+    \centering
+    \caption{FindingShapeletBF(dataset \textbf{D}, \textit{MAXLEN, MINLEN})}
+        \label{alg:algorithm}
+    \begin{algorithmic}[1]
+        \STATE candidates $\leftarrow$ GenerateCandidates(\textbf{D}, MAXLEN,MINLEN)\\
+        \STATE bsf\_gain $\leftarrow 0$ \\
+        \STATE \textbf{For each} S \textbf{in} candidates\\
+        \STATE \qquad gain $\leftarrow$ CheckCandidate(\textbf{D}, S)\\
+        \STATE \qquad \textbf{If} gain > bsf\_gain\\
+        \STATE \qquad \qquad bsf\_gain $\leftarrow$ gain\\
+        \STATE \qquad \qquad bsf\_shapelet $\leftarrow$ S\\
+        \STATE \qquad \textbf{Endif}\\
+        \STATE \textbf{Endfor}\\
+        \STATE \textbf{Return} bsf\_shaplet\\
+    \end{algorithmic}
+\end{algorithm}
+
+算法首先生成一些候选序列，然后使用信息增益（\textit{Information Gain}）衡量候选序列的分类效果，并找到信息增益最大的候选序列。对集合的划分利用时间序列和连续子序列的距离$SubsequenceDist(T, S)$，如图所示\ref{fig:fig3}，CheckCandidiate()函数中，首先计算\textbf{D}中所有序列与候选shapelet之间的距离，然后找到最佳的划分点，并得到对应的信息增益。\par
+
+\begin{figure}[htbp]
+    \small
+    \centering
+    \includegraphics[width=15cm]{3.JPG}
+    \label{fig:fig3}
+    \caption{划分点}
+\end{figure}
+
+划分点的选取需要遍历得到的距离序列中相邻点对的中点。\par
+
+由基本算法\ref{alg:algorithm}可以构造决策树，用于时间序列的分类。这是最初提出的shapelet用法。\par
 
 %参考文献的格式可能有问题，这不是用于投稿的材料，只用于记录、交流
 \newpage
 \begin{thebibliography}{}
 \bibitem[Batista et al.(2011)]{Batista} Batista G, Wang X, Keogh E (2011) A complexity-invariant distance measure for time series. Proceedings of the eleventh SIAM conference on data mining (SDM)
-\bibitem[Lexiang Ye \& Eamonn Keogh(2009)]{Lexiang} Lexiang Ye, Eamonn Keogh (2009) Time Series Shapelets: A New Primitive for Data Mining. ACM Knowledge Discovery and Data Mining (KDD)
-\end{thebibliography}
 
+\bibitem[Lexiang Ye \& Eamonn Keogh(2009)]{Lexiang} Lexiang Ye, Eamonn Keogh (2009) Time Series Shapelets: A New Primitive for Data Mining. ACM Knowledge Discovery and Data Mining (KDD)
+
+\bibitem[Hills et al.(2013)]{Hills} Jon Hills · Jason Lines · Edgaras Baranauskas James Mapp · Anthony Bagnall (2013) Classification of time series by shapelet transformation: Data Mining and Knowledge
+Discovery (DMKD)
+\end{thebibliography}
 
 \end{CJK}
 \end{document}
