@@ -17,7 +17,7 @@ class Query(object):
 
 
 
-#根据起止日期查询股票数据，分钟级，从每天9.31到11.30，下午3点到5点
+#根据起止日期查询股票数据，分钟级，从每天9.31到11.30，下午1点到3点
 #这里把datetime作为行索引，返回一个pandas，列名为[ start , max , min , end , amount , money]
 	def Query(self,beginDatetime,endDatetime,stock):
 		sql = "Select * From %s where datetime between '%s' and '%s';" %(stock, str(beginDatetime), str(endDatetime))
@@ -55,7 +55,7 @@ class Query(object):
 		tmp = self.cur.fetchall()
 		res = {}		
 
-		filtered = filter(lambda x : (x[0].hour == 9 and x[0].minute == 31) , tmp)
+		filtered = filter(lambda x : (x[0].hour == 15 and x[0].minute == 0) , tmp)
 		for ele in filtered:
 			res[ele[0].date()] = ele[4]
 		result = df({stock:Series(res)})
@@ -65,7 +65,7 @@ class Query(object):
 if __name__ == '__main__':
 	query = Query(user='root', passwd="BUAAQuant", db='data')	#在本地运行的话可以加上 host = '219.224.169.45'，建议还是在服务器上跑
 	#几个例子，跑一下看下每个查询函数的输出结果
-	print query.Query(dt(2014,1,10,9,30),dt(2014,1,10,9,40),'SH600000')
+	print query.Query(dt(2014,1,10,9,30),dt(2014,1,10,15,0),'SH600000')
 	print query.QueryDaily(dt(2014,1,1),dt(2014,1,10),'SH600000')
 	print query.QueryDaily_end(dt(2014,1,1),dt(2014,1,10),'SH600000')
 	query.closeCursor()
