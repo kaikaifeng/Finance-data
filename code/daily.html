@@ -10,9 +10,9 @@
         window.onload = function () {
             file = getQueryString("file");
             loadCSV(file);
-			date = [];
-			for(var i = 0; i < dataProvider[0].data.length; i++){
-				date.push(i);
+            date = [];
+            for (var i = 0; i < dataProvider[0].data.length; i++) {
+                date.push(i);
 			}
             chart();
         }
@@ -36,22 +36,22 @@
         }
 
         function chart() {
-			var myChart = echarts.init(document.getElementById('main'));
-			serie = [];
-			var item = {
-				name: dataProvider[0].name,
-				type: 'line',
-				data: dataProvider[0].data
-			}
-			serie.push(item);
-			console.log(serie);
-			option = {
-			    title: {
-				    left: 'center',
-					top: 'bottom',
-					text: file
-			    },
-				xAxis: {
+            var myChart = echarts.init(document.getElementById('main'));
+            serie = [];
+            var item = {
+                name: dataProvider[0].name,
+                type: 'line',
+                data: dataProvider[0].data
+            }
+            serie.push(item);
+            console.log(serie);
+            option = {
+                title: {
+                    left: 'center',
+                    top: 'bottom',
+                    text: file
+                },
+                xAxis: {
                     type: 'category',
                     boundaryGap: false,
                     data: date
