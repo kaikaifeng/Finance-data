@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8">
@@ -33,10 +33,6 @@
         function parseCSV(data) {
             var rows = data.split("\n");
             dataProvider = [{ name: file, data: rows.slice(1) }];
-            //console.log(dataProvider);
-            //for (var i = 0; i < dataProvider[0].data.length; i++) {
-            //    console.log(dataProvider[0].data[i]);
-            //}
         }
 
         function chart() {
@@ -50,11 +46,11 @@
 			serie.push(item);
 			console.log(serie);
 			option = {
-				title: {
-						left: 'center',
-						top: 'bottom',
-						text: file
-				},
+			    title: {
+				    left: 'center',
+					top: 'bottom',
+					text: file
+			    },
 				xAxis: {
                     type: 'category',
                     boundaryGap: false,
