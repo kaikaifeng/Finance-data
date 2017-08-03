@@ -74,4 +74,9 @@ public class Serie {
 		}
 		return min;
 	}
+	
+	private double betterDist(double[] F, int startPosition, double currebtBest){
+	
+		return 0.0;
+	}
 }
