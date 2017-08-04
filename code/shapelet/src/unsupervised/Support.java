@@ -59,12 +59,18 @@ public class Support {
 			values[hole] = tmp;
 			labels[hole] = labelTmp;
 		}
-		for (int i : labels) {
+		/*for (int i : labels) {
 			System.out.print(i + " ");
 		}
 		System.out.println();
 		for (double d : values) {
 			System.out.print(d + " ");
+		}*/
+		for(int i = 0; i < values.length; i++){
+			if(!map.containsKey(new Integer(labels[i]))){
+				map.put(new Integer(labels[i]), new ArrayList<Integer>());
+			}
+			map.get(labels[i]).add(new Integer(i + 1));
 		}
 		return map;
 	}
