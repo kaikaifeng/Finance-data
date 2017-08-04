@@ -1,6 +1,7 @@
 package shapelet;
 
 import java.util.ArrayList;
+import java.util.function.DoubleToLongFunction;
 
 public class Serie {
 	private double[] list;
@@ -75,8 +76,48 @@ public class Serie {
 		return min;
 	}
 	
-	private double betterDist(double[] F, int startPosition, double currebtBest){
+	private double betterDist(double[] F, int startPosition, double currentBest, double mu, double sigma){
+		double sum = 0.0;
+		for(int i = 0; i < F.length; i++){
+			double normalizated = list[i + startPosition] - mu;
+			normalizated /= sigma;
+			sum += (F[i] - normalizated) * (F[i] - normalizated);
+			if(sum > currentBest){
+				break;
+			}
+		}
+		return sum;
+	}
 	
-		return 0.0;
+	public double betterSubsequenceDist(Shapelet shapelet){
+		double[] F = shapelet.getList();
+		double sumMu = 0.0;
+		double sumSigma = 0.0;
+		double currentBest = Double.MAX_VALUE;
+		for(int i = 0; i < F.length; i++){
+			sumMu += list[i];
+			sumSigma += list[i] * list[i];
+		}
+		double mu = sumMu / F.length;
+		double sigma = sumMu / F.length;
+		sigma -= mu * mu;
+		double dist = betterDist(F, 0, currentBest, mu, sigma);
+		if(dist < currentBest){
+			currentBest = dist;
+		}
+		for(int i = 0; i < list.length - F.length; i++){
+			sumMu += list[i + F.length];
+			sumMu -= list[i];
+			sumSigma += list[i + F.length] * list[i + F.length];
+			sumSigma -= list[i] * list[i];
+			mu = sumMu / F.length;
+			sigma = sumMu / F.length;
+			sigma -= mu * mu;
+			dist = betterDist(F, i + 1, currentBest, mu, sigma);
+			if(dist < currentBest){
+				currentBest = dist;
+			}
+		}
+		return Math.sqrt(currentBest);
 	}
 }

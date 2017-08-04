@@ -26,13 +26,14 @@ public class Main {
 		System.out.println(aHashMap.get(new Integer(1)));*/
 		
 		//set.generateAll(50, 100);
-		/*long start = System.currentTimeMillis();
+		long start = System.currentTimeMillis();
 		long sum = 0;
 		for(int i = 50; i <= 50; i++){
 			ArrayList<Shapelet> sh = set.generateShapelet(i);
 			for (Shapelet shapelet : sh) {
 				for (Serie serie : set.getSeries()) {
-					serie.naiveSubsequenceDist(shapelet);
+					//serie.naiveSubsequenceDist(shapelet);
+					serie.betterSubsequenceDist(shapelet);
 					sum++;
 					if(sum % 10000 == 0){
 						System.out.println(sum);
@@ -41,7 +42,7 @@ public class Main {
 			}
 		}
 		System.out.println("sum: " + sum);
-		System.out.println("time: " + (System.currentTimeMillis() - start));*/
+		System.out.println("time: " + (System.currentTimeMillis() - start));
 		
 		/*double[][] a = new double[7][];
 		a[1] = new double[9];
