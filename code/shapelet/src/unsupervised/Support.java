@@ -8,11 +8,11 @@ public class Support {
 		
 	}
 	
-	public static HashMap<Integer, ArrayList<Integer>> outHeapSort(double[] values, int[] labels){
+	public static void outHeapSort(double[] values, int[] labels){
 		if(values.length != labels.length){
-			return null;
+			return;
 		}
-		HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+		//HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 		for(int i = (values.length - 1) / 2; i > 0; i--){
 			int hole = i;
 			int child = 0;
@@ -66,12 +66,12 @@ public class Support {
 		for (double d : values) {
 			System.out.print(d + " ");
 		}*/
-		for(int i = 0; i < values.length; i++){
+		/*for(int i = 0; i < values.length; i++){
 			if(!map.containsKey(new Integer(labels[i]))){
 				map.put(new Integer(labels[i]), new ArrayList<Integer>());
 			}
 			map.get(labels[i]).add(new Integer(i + 1));
 		}
-		return map;
+		return map;*/
 	}
 }

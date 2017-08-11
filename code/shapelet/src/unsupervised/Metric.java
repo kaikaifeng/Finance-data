@@ -5,9 +5,40 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Metric {
-	public static double FStatistic(){
-		double F = 0.0;
-		return F;
+	public static double FStatistic(HashMap<Integer, ArrayList<Integer>> map){
+		ArrayList<Integer> integers = new ArrayList<>(map.keySet());
+		double[] averages = new double[integers.size()]; 
+		double allAverage = 0.0;
+		int allNumber = 0;
+		int[] number = new int[integers.size()];
+		for(int i = 0; i < integers.size(); i++) {
+			ArrayList<Integer> list = map.get(integers.get(i));
+			double average = 0.0;
+			for (Integer value : list) {
+				average += value.intValue();
+			}
+			allAverage += average;
+			averages[i] = average / list.size();
+			number[i] = list.size();
+			allNumber += number[i];
+		}
+		allAverage /= allNumber;
+		double denominator = 0.0;
+		for(int i = 0; i < integers.size(); i++){
+			ArrayList<Integer> list = map.get(integers.get(i));
+			double sum = 0.0;
+			for (Integer value : list) {
+				sum += (value.doubleValue() - averages[i]) * (value.doubleValue() - averages[i]);
+			}
+			denominator += sum;
+		}
+		denominator /= allNumber - integers.size();
+		double numerator = 0.0;
+		for(int i = 0; i < integers.size(); i++){
+			numerator += (averages[i] - allAverage) * (averages[i] - allAverage);
+		}
+		numerator /= integers.size() - 1;
+		return numerator / denominator;
 	}
 	
 	public static double KruskalWallis(HashMap<Integer, ArrayList<Integer>> map){
