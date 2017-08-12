@@ -39,9 +39,14 @@ public class Emperor implements Runnable{
 				System.out.println(socket.getInetAddress() + ": can't get ready");
 				return;
 			}
-			bufferedWriter.write(startPosition);
-			bufferedWriter.write(length);
+			bufferedWriter.write(startPosition + "," + length);
+			bufferedWriter.newLine();
+			//bufferedWriter.flush();
+			//bufferedWriter.write(length);
+			//bufferedWriter.newLine();
+			bufferedWriter.flush();
 			info = bufferedReader.readLine();
+			System.out.println(info);
 			if(!info.equals("finished")){
 				System.out.println(socket.getInetAddress() + ": can't finish tasks");
 			}
@@ -49,7 +54,7 @@ public class Emperor implements Runnable{
 			socket.shutdownInput();
 			socket.shutdownOutput();
 			socket.close();
-		} catch (IOException exception) {
+		} catch (Exception exception) {
 			exception.printStackTrace();
 		} 
 	}
