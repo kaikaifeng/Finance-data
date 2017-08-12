@@ -8,10 +8,10 @@ import shapelet.SeriesSet;
 import shapelet.Shapelet;
 
 public class Knight implements Runnable{
-	private SeriesSet seriesSet;
-	private int startNumber;
-	private int endNumber;
-	private Knights.Name name;
+	protected SeriesSet seriesSet;
+	protected int startNumber;
+	protected int endNumber;
+	protected Knights.Name name;
 	
 	public Knight(SeriesSet seriesSet, int startNumber, int endNumber) {
 		this.seriesSet = seriesSet;

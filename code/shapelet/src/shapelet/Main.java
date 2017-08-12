@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import multiThread.Knight;
+import multiThread.Paladin;
 import unsupervised.Support;
 
 public class Main {
@@ -133,9 +134,10 @@ public class Main {
 		System.out.println(set.getSeries().get(0).subsequenceDist(shapelets.get(10000)));*/
 		
 		//multiThread test
-		for(int i = 0; i < 10; i++){
-			Knight knight = new Knight(set, 50 + i, 50 + i);
-			knight.run();
+		for(int i = 0; i < 50; i++){
+			Knight knight = new Paladin(set, 50 + i, 50 + i);
+			Thread thread = new Thread(knight);
+			thread.start();
 		}
 	}
 }
