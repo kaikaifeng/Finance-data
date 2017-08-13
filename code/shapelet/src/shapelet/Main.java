@@ -134,10 +134,18 @@ public class Main {
 		System.out.println(set.getSeries().get(0).subsequenceDist(shapelets.get(10000)));*/
 		
 		//multiThread test
-		for(int i = 0; i < 50; i++){
+		for(int i = 0; i < 1; i++){
 			Knight knight = new Paladin(set, 50 + i, 50 + i);
 			Thread thread = new Thread(knight);
 			thread.start();
 		}
+		
+		//copy test
+		/*int[] a = {1, 2};
+		int[] b = new int[2];
+		System.arraycopy(a, 0, b, 0, a.length);
+		for (int i : b) {
+			System.out.println(i);
+		}*/
 	}
 }

@@ -33,6 +33,9 @@ public class Shapelet {
 		return from;
 	}
 	
+	/*
+	 * can use faster copy
+	 */
 	public void sortIndex(){
 		if(!sorted){
 			index = new int[list.length];

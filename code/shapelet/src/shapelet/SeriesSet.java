@@ -115,4 +115,8 @@ public class SeriesSet {
 		}
 		return list;
 	}
+	
+	public int size(){
+		return series.size();
+	}
 }

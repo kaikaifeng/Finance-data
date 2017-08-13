@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.Set;
 
 public class Metric {
+	/*
+	 * no correct
+	 */
 	public static double FStatistic(HashMap<Integer, ArrayList<Integer>> map){
 		ArrayList<Integer> integers = new ArrayList<>(map.keySet());
 		double[] averages = new double[integers.size()]; 
@@ -50,20 +53,66 @@ public class Metric {
 			ArrayList<Integer> list = map.get(integer);
 			long squareSum = 0;
 			for (Integer rank : list) {
+				//System.out.println(rank.intValue());
 				squareSum += rank.intValue() * rank.intValue();
 			}
+			//System.out.println(squareSum);
+			//System.out.println(list.size());
 			squareSum /= list.size();
 			sum += squareSum;
 			number += list.size();
+			//System.out.println(list.size());
 		}
+		//System.out.println(sum);
 		K = sum * 12;
+		//System.out.println(K);
 		K /= number * (++number);
+		//System.out.println(K);
 		K -= 3 * number;
+		//System.out.println(number);
 		return K;
 	}
 	
 	public static double MoodsMedian(){
-		
 		return 0.0;
+	}
+	
+	public static HashMap<Integer, ArrayList<Integer>> dealLabelRank(int[] labels, double[] values){
+		if(labels.length != values.length){
+			return null;
+		}
+		HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
+		//copy at first
+		int[] tmpLabels = new int[labels.length];
+		double[] tmpValues = new double[labels.length];
+		System.arraycopy(labels, 0, tmpLabels, 0, labels.length);
+		System.arraycopy(values, 0, tmpValues, 0, labels.length);
+		Support.outHeapSort(tmpValues, tmpLabels);
+		for(int i = 0; i < labels.length; i++) {
+			if(!map.containsKey(Integer.valueOf(tmpLabels[i]))){
+				map.put(Integer.valueOf(tmpLabels[i]), new ArrayList<Integer>());
+			}
+			map.get(Integer.valueOf(tmpLabels[i])).add(new Integer(i + 1));
+		}
+		return map;
+	}
+	
+	public static HashMap<Integer, ArrayList<Double>> dealLabelValue(int[] labels, double[] values){
+		if(labels.length != values.length){
+			return null;
+		}
+		HashMap<Integer, ArrayList<Double>> map = new HashMap<Integer, ArrayList<Double>>();
+		int[] tmpLabels = new int[labels.length];
+		double[] tmpValues = new double[labels.length];
+		System.arraycopy(labels, 0, tmpLabels, 0, labels.length);
+		System.arraycopy(values, 0, tmpValues, 0, labels.length);
+		Support.outHeapSort(tmpValues, tmpLabels);
+		for(int i = 0; i < labels.length; i++) {
+			if(!map.containsKey(Integer.valueOf(tmpLabels[i]))){
+				map.put(Integer.valueOf(tmpLabels[i]), new ArrayList<Double>());
+			}
+			map.get(Integer.valueOf(tmpLabels[i])).add(new Double(tmpValues[i]));
+		}
+		return map;
 	}
 }

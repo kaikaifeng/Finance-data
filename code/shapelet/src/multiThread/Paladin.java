@@ -18,6 +18,8 @@ import shapelet.Input;
 import shapelet.Serie;
 import shapelet.SeriesSet;
 import shapelet.Shapelet;
+import unsupervised.Metric;
+import unsupervised.Support;
 
 public class Paladin extends Knight{
 	private Socket socket;
@@ -38,10 +40,20 @@ public class Paladin extends Knight{
 			ArrayList<Shapelet> shapelets = seriesSet.generateShapelet(i);
 			for (Shapelet shapelet : shapelets) {
 				shapelet.sortIndex();
+				double[] subsequenceDists = new double[seriesSet.size()];
+				//int[] labels = new int[seriesSet.size()];
+				int j = 0;
+				//System.out.println(seriesSet.size());
 				for (Serie serie : seriesSet.getSeries()) {
-					serie.subsequenceDist(shapelet);
+					subsequenceDists[j] = serie.subsequenceDist(shapelet);
+					//labels[j] = serie.getLabel();
 					sum++;
+					j++;
 				}
+				int[] labels = Support.KMeans(subsequenceDists, 2);
+				//System.out.println(labels.length);
+				double score = Metric.KruskalWallis(Metric.dealLabelRank(labels, subsequenceDists));
+				//System.out.println(score);
 			}
 		}
 		System.out.println("sum: " + sum);
@@ -87,6 +99,7 @@ public class Paladin extends Knight{
 				Thread thread = new Thread(paladin);
 				thread.start();
 			}
+			//Thread.sleep(10000);
 			bufferedWriter.write("finished");
 			bufferedWriter.newLine();
 			bufferedWriter.flush();

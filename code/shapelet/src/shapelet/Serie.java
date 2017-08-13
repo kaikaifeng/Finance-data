@@ -107,6 +107,7 @@ public class Serie {
 			for(int j = 0; j < F.length; j++){
 				subsequence[j] = list[i + j];
 			}
+			//System.arraycopy(list, i, subsequence, 0, F.length);
 			double current = naiveDist(F, subsequence);
 			if(current < min){
 				min = current;
