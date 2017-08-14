@@ -13,7 +13,10 @@ import java.net.Socket;
 import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
+import output.Log;
 import shapelet.Input;
 import shapelet.Serie;
 import shapelet.SeriesSet;
@@ -106,6 +109,9 @@ public class Paladin extends Knight{
 			socket.shutdownInput();
 			socket.shutdownOutput();
 			socket.close();
+			Log log = Log.getLog(args[0]);
+			log.record("Done");
+			System.out.println("Done");
 		}
 		catch (Exception exception) {
 			exception.printStackTrace();

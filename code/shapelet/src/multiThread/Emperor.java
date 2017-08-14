@@ -10,6 +10,8 @@ import java.io.OutputStreamWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import output.Log;
+
 public class Emperor implements Runnable{
 	private int position;
 	private int startPosition;
@@ -54,6 +56,7 @@ public class Emperor implements Runnable{
 			socket.shutdownInput();
 			socket.shutdownOutput();
 			socket.close();
+			
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		} 
@@ -81,7 +84,55 @@ public class Emperor implements Runnable{
 		for(int i = 0; i < number; i++){
 			finished[i] = false;
 		}
+		
 		ServerSocket serverSocket = new ServerSocket(49000);
+		final ServerSocket logServer = Log.getServer();
+		class runLog implements Runnable{
+			private int number;
+			private ServerSocket serverSocket;
+			
+			public runLog(int number, ServerSocket serverSocket) {
+				this.number = number;
+				this.serverSocket = serverSocket;
+			}
+
+			@Override
+			public void run() {
+				for(int i = 0; i < number; i++){
+					try{
+						final Socket socket = serverSocket.accept();
+						System.out.println(serverSocket.getLocalPort());
+						Thread thread = new Thread(new Runnable() {
+							
+							@Override
+							public void run() {
+								try(InputStream inputStream = socket.getInputStream();
+										InputStreamReader reader = new InputStreamReader(inputStream);
+										BufferedReader bufferedReader = new BufferedReader(reader);){
+									String string = null;
+									System.out.println(socket.getInetAddress());
+									System.out.println("@@@@@@@@@");
+									while((string = bufferedReader.readLine()) != null){
+										System.out.println(string);
+									}
+									System.out.println("#########");
+								}
+								catch (Exception exception) {
+									exception.printStackTrace();
+								}
+							}
+						});
+						thread.start();
+					}
+					catch(Exception exception){
+						exception.printStackTrace();
+					}
+				}
+			}
+		}
+		Thread logThread = new Thread(new runLog(number, logServer));
+		logThread.start();
+		
 		while(!allTrue(finished)){
 			if(position < number){
 				try{
