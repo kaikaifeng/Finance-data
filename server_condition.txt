@@ -52,7 +52,7 @@ spark.executor.instances 15（尝试了15、50、200）应当可以通过减小�
 
 \\Dell R910不支持windows server2016
 
-\\spark exector正常运行的数量目前最多达到20（通常达不到），瓶颈应是内存总量不足
+\\spark executor正常运行的数量目前最多达到20（通常达不到），瓶颈应是内存总量不足
 \\sql server2012中可以使用bcp导出数据，基本命令为：
 EXEC [数据库名称]..xp_cmdshell 'bcp [数据库名称].dbo.[表名] out F:\test\1.csv -c -T -S [服务器名称] -U [用户名称（管理员）]'
 具体见服务器
@@ -62,7 +62,7 @@ EXEC [数据库名称]..xp_cmdshell 'bcp [数据库名称].dbo.[表名] out F:\t
 \\服务器上直接插入硬盘是不能被识别的，必须配置RAID
 \\缺少部分SZSE300的数据
 
-\\为了运行时的稳定，将spark exector的数目减少到15
+\\为了运行时的稳定，将spark executor的数目减少到15
 \\提供了构建scala jar包的“最简”（没有添加其他依赖）maven配置文件code/scala_sample/pom.xml
 \\使用maven的基本方式是在pom.xml所在目录下运行指令mvn clean scala:compile package；依次完成清理、scala编译、打包；需要注意的是源程序目录结构需要满足src/main/scala
 \\打包好的jar包可以使用spark-submit提交运行，提供的例子为：

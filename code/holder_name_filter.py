@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import cPickle as pickle
-from date import toCSV
+from pickle_date import toCSV
 
 shares = []
 shares.append(pickle.load(open('shares.pkl')))

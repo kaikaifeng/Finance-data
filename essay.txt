@@ -20,3 +20,5 @@ ACM SIGKDD international conference on Knowledge discovery and data mining, pp 2
 \\统计检验方法错误需要修正，需要bash脚本，补充shapelet总结
 
 \\需要一点点类似日志的功能
+
+\\可以考虑部分缓冲
