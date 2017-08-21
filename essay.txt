@@ -22,3 +22,6 @@ ACM SIGKDD international conference on Knowledge discovery and data mining, pp 2
 \\需要一点点类似日志的功能
 
 \\可以考虑部分缓冲
+
+\\上采样
+\\因为样本不均衡，模型很快就毫无变化了（注意应对梯度爆炸和梯度消失）
