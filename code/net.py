@@ -1,8 +1,10 @@
+# -*- coding: utf-8 -*-
+
 import tensorflow as tf
 import cPickle as pickle
 import numpy as np
 
-INPUT_NODE = 303
+INPUT_NODE = 294
 OUTPUT_NODE = 2
 
 LAYER1_NODE = 500
@@ -49,8 +51,8 @@ def get_available_gpus():
 def inference(input_tensor, avg_class, weights1, biases1, weights2, biases2, weights3, biases3, weights4, biases4):
     if avg_class == None:
         layer1 = tf.nn.sigmoid(tf.matmul(input_tensor, weights1) + biases1)
-	layer2 = tf.nn.sigmoid(tf.matmul(layer1, weights2) + biases2)
-	layer3 = tf.nn.sigmoid(tf.matmul(layer2, weights3) + biases3)
+        layer2 = tf.nn.sigmoid(tf.matmul(layer1, weights2) + biases2)
+        layer3 = tf.nn.sigmoid(tf.matmul(layer2, weights3) + biases3)
         return tf.matmul(layer3, weights4) + biases4
     else:
         layer1 = tf.nn.sigmoid(tf.matmul(input_tensor, avg_class.average(weights1)) + avg_class.average(biases1))
@@ -70,7 +72,6 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
     biases3 = tf.Variable(tf.constant(0.1, shape = [LAYER3_NODE]))
     weights4 = tf.Variable(tf.truncated_normal([LAYER3_NODE, OUTPUT_NODE], stddev = 0.1))
     biases4 = tf.Variable(tf.constant(0.1, shape = [OUTPUT_NODE]))
-
 
     y = inference(x, None, weights1, biases1, weights2, biases2, weights3, biases3, weights4, biases4)
     global_step = tf.Variable(0, trainable = False)
@@ -125,7 +126,7 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
 
         #validate_feed = {x: mnist.validation.images, y_: mnist.validation.labels}
         validate_feed = {x: validate_input, y_: validate_labels}
-	recall_feed = validate_feed
+        recall_feed = validate_feed
         #test_feed = {x: mnist.test.images, y_: mnist.test.labels}
         test_feed = validate_feed
 
@@ -139,8 +140,8 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
                 validation_acc = sess.run(accuracy, feed_dict = validate_feed)
                 print "After %d trainiing step(s), validation accuracy using average model is %g" % (i, validation_acc)
                 #validation_recall = sess.run(recalled, feed_dict = recall_feed)[0] / t_count[0]
-		
-                current_output = sess.run(average_y, feed_dict = validate_feed)
+
+		current_output = sess.run(average_y, feed_dict = validate_feed)
                 #count = 0
                 #for j in range(len(current_output)):
                 #    if current_output[j][0] > current_output[j][1] and labels[j][0] > 0.5:
@@ -157,8 +158,8 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
             #print xs.shape
             xs, ys, positive_number, negative_number = get_input_data(positive_number, negative_number, input_train_positive, input_train_negative, train_positive_labels, train_negative_labels)
             sess.run(train_op, feed_dict = {x: xs, y_: ys})
-	    if i % 100 == 0:
-		print sess.run(loss, feed_dict = {x: xs, y_: ys})
+            if i % 100 == 0:
+                print sess.run(loss, feed_dict = {x: xs, y_: ys})
             #print positive_number, negative_number
             #sess.run(tf.Print(loss, [loss]))
             #print sess.run(loss, feed_dict = {x: xs, y_: ys})

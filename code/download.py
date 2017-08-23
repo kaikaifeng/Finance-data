@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import QueryData_MySQL as qd
 from datetime import datetime as dt
 import pandas as pd

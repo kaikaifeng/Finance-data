@@ -25,3 +25,5 @@ ACM SIGKDD international conference on Knowledge discovery and data mining, pp 2
 
 \\过采样
 \\因为样本不均衡，模型很快就毫无变化了（注意应对梯度爆炸和梯度消失）
+
+\\F1、roc、auc
