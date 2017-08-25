@@ -1,0 +1,7 @@
+while read line
+do
+	mysql -uroot -p19910501 << EOF
+	use data;
+	alter table $line add primary key(datetime);
+EOF
+done < 'stocks.txt'
