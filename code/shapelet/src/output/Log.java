@@ -64,7 +64,7 @@ public class Log {
 				bufferedWriter.close();
 				writer.close();
 				outputStream.close();
-				socket.close();
+				//socket.close();
 				System.out.println("$$$$$$$$");
 				System.out.println(socket.isClosed());
 			}

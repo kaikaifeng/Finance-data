@@ -54,10 +54,12 @@ public class Metric {
 			long squareSum = 0;
 			for (Integer rank : list) {
 				//System.out.println(rank.intValue());
-				squareSum += rank.intValue() * rank.intValue();
+				//squareSum += rank.intValue() * rank.intValue();
+				squareSum += rank.intValue();
 			}
 			//System.out.println(squareSum);
 			//System.out.println(list.size());
+			squareSum = squareSum * squareSum;
 			squareSum /= list.size();
 			sum += squareSum;
 			number += list.size();
@@ -69,7 +71,7 @@ public class Metric {
 		K /= number * (++number);
 		//System.out.println(K);
 		K -= 3 * number;
-		//System.out.println(number);
+		//System.out.println(K);
 		return K;
 	}
 	
@@ -83,11 +85,22 @@ public class Metric {
 		}
 		HashMap<Integer, ArrayList<Integer>> map = new HashMap<Integer, ArrayList<Integer>>();
 		//copy at first
-		int[] tmpLabels = new int[labels.length];
-		double[] tmpValues = new double[labels.length];
-		System.arraycopy(labels, 0, tmpLabels, 0, labels.length);
-		System.arraycopy(values, 0, tmpValues, 0, labels.length);
+		int[] tmpLabels = new int[labels.length + 1];
+		double[] tmpValues = new double[labels.length + 1];
+		tmpLabels[0] = 0;
+		tmpValues[0] = 0.0;
+		System.arraycopy(labels, 0, tmpLabels, 1, labels.length);
+		System.arraycopy(values, 0, tmpValues, 1, labels.length);
 		Support.outHeapSort(tmpValues, tmpLabels);
+		/*for (double d : tmpValues) {
+			System.out.println(d);
+		}
+		try {
+			Thread.sleep(1000000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}*/
 		for(int i = 0; i < labels.length; i++) {
 			if(!map.containsKey(Integer.valueOf(tmpLabels[i]))){
 				map.put(Integer.valueOf(tmpLabels[i]), new ArrayList<Integer>());
@@ -102,10 +115,12 @@ public class Metric {
 			return null;
 		}
 		HashMap<Integer, ArrayList<Double>> map = new HashMap<Integer, ArrayList<Double>>();
-		int[] tmpLabels = new int[labels.length];
-		double[] tmpValues = new double[labels.length];
-		System.arraycopy(labels, 0, tmpLabels, 0, labels.length);
-		System.arraycopy(values, 0, tmpValues, 0, labels.length);
+		int[] tmpLabels = new int[labels.length + 1];
+		double[] tmpValues = new double[labels.length + 1];
+		tmpLabels[0] = 0;
+		tmpValues[0] = 0.0;
+		System.arraycopy(labels, 0, tmpLabels, 1, labels.length);
+		System.arraycopy(values, 0, tmpValues, 1, labels.length);
 		Support.outHeapSort(tmpValues, tmpLabels);
 		for(int i = 0; i < labels.length; i++) {
 			if(!map.containsKey(Integer.valueOf(tmpLabels[i]))){

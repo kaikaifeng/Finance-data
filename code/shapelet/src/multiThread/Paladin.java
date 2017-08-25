@@ -14,13 +14,16 @@ import java.net.SocketAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 
+import output.LocalOutput;
 import output.Log;
 import shapelet.Input;
 import shapelet.Serie;
 import shapelet.SeriesSet;
 import shapelet.Shapelet;
+import shapelet.ShapeletScore;
 import unsupervised.Metric;
 import unsupervised.Support;
 
@@ -41,22 +44,30 @@ public class Paladin extends Knight{
 		long sum = 0;
 		for(int i = startNumber; i <= endNumber; i++){
 			ArrayList<Shapelet> shapelets = seriesSet.generateShapelet(i);
+			//double[] scores = new double[shapelets.size()];
+			ArrayList<ShapeletScore> shapeletScores = new ArrayList<ShapeletScore>(shapelets.size());
+			int j = 0;
 			for (Shapelet shapelet : shapelets) {
 				shapelet.sortIndex();
 				double[] subsequenceDists = new double[seriesSet.size()];
 				//int[] labels = new int[seriesSet.size()];
-				int j = 0;
+				int k = 0;
 				//System.out.println(seriesSet.size());
 				for (Serie serie : seriesSet.getSeries()) {
-					subsequenceDists[j] = serie.subsequenceDist(shapelet);
+					subsequenceDists[k] = serie.subsequenceDist(shapelet);
 					//labels[j] = serie.getLabel();
 					sum++;
-					j++;
+					k++;
 				}
 				int[] labels = Support.KMeans(subsequenceDists, 2);
 				//System.out.println(labels.length);
 				double score = Metric.KruskalWallis(Metric.dealLabelRank(labels, subsequenceDists));
 				//System.out.println(score);
+				//scores[j] = score;
+				j++;
+				shapeletScores.add(new ShapeletScore(shapelet, score));
+				Collections.sort(shapeletScores);
+				LocalOutput.toFile("KruskalWallis/scores.csv", shapeletScores);
 			}
 		}
 		System.out.println("sum: " + sum);
