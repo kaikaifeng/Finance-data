@@ -7,10 +7,12 @@ import numpy as np
 INPUT_NODE = 294
 OUTPUT_NODE = 2
 
-LAYER1_NODE = 500
-LAYER2_NODE = 500
-LAYER3_NODE = 500
-BATCH_SIZE = 1000
+LAYER1_NODE = 1000
+LAYER2_NODE = 1000
+LAYER3_NODE = 1000
+LAYER4_NODE = 500
+LAYER5_NODE = 500
+BATCH_SIZE = 10000
 
 LEARNING_RATE_BASE = 0.8
 LEARNING_RATE_DECAY = 0.99
@@ -21,7 +23,6 @@ MOVING_AVERAGE_DECAY = 0.99
 def get_input_data(positive_number, negative_number, positive, negative, positive_labels, negative_labels):
     inputSet = []
     labels = []
-    #print positive_number, negative_number
     for i in range(BATCH_SIZE):
         if i % 2 != 0:
             inputSet.append(positive[positive_number % len(positive)])
@@ -48,17 +49,34 @@ def get_available_gpus():
     local_device_protos = _device_lib.list_local_devices()
     return [x.name for x in local_device_protos if x.device_type == 'GPU']
 
-def inference(input_tensor, avg_class, weights1, biases1, weights2, biases2, weights3, biases3, weights4, biases4):
+def inference(input_tensor,
+              avg_class,
+              weights1,
+              biases1,
+              weights2,
+              biases2,
+              weights3,
+              biases3,
+              weights4,
+              biases4,
+              weights5,
+              biases5,
+              weights6,
+              biases6):
     if avg_class == None:
         layer1 = tf.nn.sigmoid(tf.matmul(input_tensor, weights1) + biases1)
         layer2 = tf.nn.sigmoid(tf.matmul(layer1, weights2) + biases2)
         layer3 = tf.nn.sigmoid(tf.matmul(layer2, weights3) + biases3)
-        return tf.matmul(layer3, weights4) + biases4
+        layer4 = tf.nn.sigmoid(tf.matmul(layer3, weights4) + biases4)
+        layer5 = tf.nn.sigmoid(tf.matmul(layer4, weights5) + biases5)
+        return tf.matmul(layer5, weights6) + biases6
     else:
         layer1 = tf.nn.sigmoid(tf.matmul(input_tensor, avg_class.average(weights1)) + avg_class.average(biases1))
         layer2 = tf.nn.sigmoid(tf.matmul(layer1, avg_class.average(weights2)) + avg_class.average(biases2))
         layer3 = tf.nn.sigmoid(tf.matmul(layer2, avg_class.average(weights3)) + avg_class.average(biases3))
-        return tf.matmul(layer3, avg_class.average(weights4)) + biases4
+        layer4 = tf.nn.sigmoid(tf.matmul(layer3, avg_class.average(weights4)) + avg_class.average(biases4))
+        layer5 = tf.nn.sigmoid(tf.matmul(layer4, avg_class.average(weights5)) + avg_class.average(biases5))
+        return tf.matmul(layer5, avg_class.average(weights6)) + biases6
 
 def train(data_train_positive, data_train_negative, data_validate, train_positive_labels, train_negative_labels, validate_labels):
     x = tf.placeholder(tf.float32, [None, INPUT_NODE], name = 'x-input')
@@ -70,16 +88,46 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
     biases2 = tf.Variable(tf.constant(0.1, shape = [LAYER2_NODE]))
     weights3 = tf.Variable(tf.truncated_normal([LAYER2_NODE, LAYER3_NODE], stddev = 0.1))
     biases3 = tf.Variable(tf.constant(0.1, shape = [LAYER3_NODE]))
-    weights4 = tf.Variable(tf.truncated_normal([LAYER3_NODE, OUTPUT_NODE], stddev = 0.1))
-    biases4 = tf.Variable(tf.constant(0.1, shape = [OUTPUT_NODE]))
+    weights4 = tf.Variable(tf.truncated_normal([LAYER3_NODE, LAYER4_NODE], stddev = 0.1))
+    biases4 = tf.Variable(tf.constant(0.1, shape = [LAYER4_NODE]))
+    weights5 = tf.Variable(tf.truncated_normal([LAYER4_NODE, LAYER5_NODE], stddev = 0.1))
+    biases5 = tf.Variable(tf.constant(0.1, shape = [LAYER5_NODE]))
+    weights6 = tf.Variable(tf.truncated_normal([LAYER5_NODE, OUTPUT_NODE], stddev = 0.1))
+    biases6 = tf.Variable(tf.constant(0.1, shape = [OUTPUT_NODE]))
 
-    y = inference(x, None, weights1, biases1, weights2, biases2, weights3, biases3, weights4, biases4)
+    y = inference(x,
+                  None,
+                  weights1,
+                  biases1,
+                  weights2,
+                  biases2,
+                  weights3,
+                  biases3,
+                  weights4,
+                  biases4,
+                  weights5,
+                  biases5,
+                  weights6,
+                  biases6)
     global_step = tf.Variable(0, trainable = False)
 
     variable_averages = tf.train.ExponentialMovingAverage(MOVING_AVERAGE_DECAY, global_step)
     variables_averages_op = variable_averages.apply(tf.trainable_variables())
 
-    average_y = inference(x, variable_averages, weights1, biases1, weights2, biases2, weights3, biases3, weights4, biases4)
+    average_y = inference(x,
+                          variable_averages,
+                          weights1,
+                          biases1,
+                          weights2,
+                          biases2,
+                          weights3,
+                          biases3,
+                          weights4,
+                          biases4,
+                          weights5,
+                          biases5,
+                          weights6,
+                          biases6)
     cross_entropy = tf.nn.sparse_softmax_cross_entropy_with_logits(labels = tf.argmax(y_, 1), logits = y)
     cross_entropy_mean = tf.reduce_mean(cross_entropy)
 
@@ -87,7 +135,6 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
     #regularization = regularizer(weights1) + regularizer(weights2)
     #loss = cross_entropy_mean + regularization
     loss = cross_entropy_mean
-    #tf.Print(loss, [loss])
 
     learning_rate = tf.train.exponential_decay(LEARNING_RATE_BASE, global_step, (2 * len(data_train_positive)) / BATCH_SIZE, LEARNING_RATE_DECAY)
 
@@ -99,16 +146,8 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
     accuracy = tf.reduce_mean(tf.cast(correct_predicition, tf.float32))
 
     total_count = tf.reduce_sum(y_, 0)
-    #softmax average_y at first
-    #softmax = tf.nn.softmax(average_y)
-    #only valid for binary classification 
-    #recalled = tf.reduce_sum(tf.sign(softmax - 0.5) + 1.0, 0) / 2.0
-    #recall = tf.div(recalled, total_count)[0]
 
-    #dataSet = np.array(pickle.load(open('/home/fengkai/part_500000.pkl')))
     print data_train_positive.shape
-    #train_positive_labels = data_train_positive[:, -1].reshape(data_train_positive.shape[0], 1)
-    #train_negative_labels = data_train_negative[:, -1].reshape(data_train_negative.shape[0], 1)
     print train_positive_labels.shape
     print train_negative_labels.shape
     input_train_positive = data_train_positive[:, : -1]
@@ -119,15 +158,14 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
     validate_input = data_validate[:, : -1]
     print validate_input.shape
     print validate_labels.shape
-    #validate_labels = data_validate[:, -1].reshape(data_validate.shape[0], 1)
+    
+    saver = tf.train.Saver(max_to_keep = None)
 
     with tf.Session() as sess:
         tf.initialize_all_variables().run()
 
-        #validate_feed = {x: mnist.validation.images, y_: mnist.validation.labels}
         validate_feed = {x: validate_input, y_: validate_labels}
-        recall_feed = validate_feed
-        #test_feed = {x: mnist.test.images, y_: mnist.test.labels}
+	recall_feed = validate_feed
         test_feed = validate_feed
 
         input_count = sess.run(total_count, feed_dict = {y_: validate_labels})
@@ -139,37 +177,22 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
             if i % 1000 == 0:
                 validation_acc = sess.run(accuracy, feed_dict = validate_feed)
                 print "After %d trainiing step(s), validation accuracy using average model is %g" % (i, validation_acc)
-                #validation_recall = sess.run(recalled, feed_dict = recall_feed)[0] / t_count[0]
 
 		current_output = sess.run(average_y, feed_dict = validate_feed)
-                #count = 0
-                #for j in range(len(current_output)):
-                #    if current_output[j][0] > current_output[j][1] and labels[j][0] > 0.5:
-                #        count = count + 1
-                #print "After %d trainiing step(s), validation recall using average model is %g" % (i, count / input_count[0])
-                recall(validate_labels, current_output, input_count, i)
-                print sess.run(loss, feed_dict = validate_feed)
-		
-            #xs, ys = mnist.train.next_batch(BATCH_SIZE)
-            #start = (i * BATCH_SIZE) % len(dataSet)
-            #end = min(start + BATCH_SIZE, len(dataSet))
-            #xs = inputSet[start: end]
-            #ys = labels[start: end]
-            #print xs.shape
-            xs, ys, positive_number, negative_number = get_input_data(positive_number, negative_number, input_train_positive, input_train_negative, train_positive_labels, train_negative_labels)
-            sess.run(train_op, feed_dict = {x: xs, y_: ys})
-            if i % 100 == 0:
+		recall(validate_labels, current_output, input_count, i)
+		print sess.run(loss, feed_dict = validate_feed)
+		saver_path = saver.save(sess, 'save/fully/8_25/model.ckpt', global_step = i)
+
+	    xs, ys, positive_number, negative_number = get_input_data(positive_number, negative_number, input_train_positive, input_train_negative, train_positive_labels, train_negative_labels)
+	    sess.run(train_op, feed_dict = {x: xs, y_: ys})
+	    if i % 100 == 0:
                 print sess.run(loss, feed_dict = {x: xs, y_: ys})
-            #print positive_number, negative_number
-            #sess.run(tf.Print(loss, [loss]))
-            #print sess.run(loss, feed_dict = {x: xs, y_: ys})
 
         test_acc = sess.run(accuracy, feed_dict = test_feed)
         print "After %d trainiing step(s), validation accuracy using average model is %g" % (TRAINING_STEPS, test_acc)
-        #test_recall = sess.run(recall, feed_dict = recall_feed)
-        #print "After %d trainiing step(s), validation recall using average model is %g" % (TRAINING_STEPS, test_recall)
         current_output = sess.run(average_y, feed_dict = validate_feed)
         recall(validate_labels, current_output, input_count, TRAINING_STEPS)
+        saver_path = saver.save(sess, 'save/fully/8_25/model.ckpt', global_step = TRAINING_STEPS)
 
 def main(argv = None):
     #mnist = input_data.read_data_sets("", one_hot = True)
@@ -180,7 +203,6 @@ def main(argv = None):
     train_positive_labels = np.array(pickle.load(open('/home/fengkai/500w_train_positive_label.pkl')))
     train_negative_labels = np.array(pickle.load(open('/home/fengkai/500w_train_negative_label.pkl')))
     validate_label = np.array(pickle.load(open('/home/fengkai/500w_validate_label.pkl')))
-    #labels = np.array(pickle.load(open('/home/fengkai/labels_500w.pkl')))
     train(data_train_positive, data_train_negative, data_validate, train_positive_labels, train_negative_labels, validate_label)
 
 if __name__ == '__main__':
