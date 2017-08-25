@@ -1,0 +1,9 @@
+MySQL数据导入：
+1.DataProcess.java：
+	用于合并2016，2017两个文件夹，并合并表中date和time两个字段为MySQL可以识别的datetime字符串格式；
+2.createTable.sh：
+	用于在data数据库中为股票创建表（可能有些股票在原始数据中从未出现过）；
+3.addPK .sh：
+	用于为data数据库所有表设置主键为‘datetime’（zyt初始建表时没有设置主键），为了后续导入数据可以使用mysqlimport的--replace选项，将时间段重合的数据替换，避免重复；
+4.MySQLImport.sh：
+	用于导入数据，-p后面和密码不能带空格
