@@ -78,7 +78,7 @@ public class SeriesSet {
 			let[i] -= mu;
 			let[i] /= sigma;
 		}
-		shapelets.add(new Shapelet(let));
+		shapelets.add(new Shapelet(let, serie.getName()));
 		for(int i = 0; i < list.length - length; i++){
 			sumMu += list[i + length];
 			sumMu -= list[i];
@@ -94,7 +94,7 @@ public class SeriesSet {
 				let[j] -= mu;
 				let[j] /= sigma;
 			}
-			shapelets.add(new Shapelet(let));
+			shapelets.add(new Shapelet(let, serie.getName()));
 		}
 	}
 	

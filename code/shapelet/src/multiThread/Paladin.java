@@ -66,9 +66,13 @@ public class Paladin extends Knight{
 				//scores[j] = score;
 				j++;
 				shapeletScores.add(new ShapeletScore(shapelet, score));
-				Collections.sort(shapeletScores);
-				LocalOutput.toFile("KruskalWallis/scores.csv", shapeletScores);
 			}
+			Collections.sort(shapeletScores);
+			ArrayList<ShapeletScore> tops = new ArrayList<ShapeletScore>();
+			for(int k = shapeletScores.size() - 1; k >= shapeletScores.size() - 1000; k--){
+				tops.add(shapeletScores.get(k));
+			}
+			LocalOutput.toFile("KruskalWallis/scores_" + startNumber + ".csv", tops);
 		}
 		System.out.println("sum: " + sum);
 		System.out.println("time: " + (System.currentTimeMillis() - start));

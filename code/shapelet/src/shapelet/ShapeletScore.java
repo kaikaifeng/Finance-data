@@ -40,6 +40,6 @@ public class ShapeletScore implements Comparable<ShapeletScore>{
 	
 	@Override
 	public String toString(){
-		return shapelet.getStringBuffer().append(score).toString();
+		return shapelet.getStringBuffer().append(score).append(",").append(shapelet.getFrom()).toString();
 	}
 }

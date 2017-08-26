@@ -25,7 +25,7 @@ public class Input {
 				while((tmp = bufferedReader.readLine()) != null){
 					if(!tmp.equals("")){
 						try{
-						list.add(new Double(tmp));
+							list.add(new Double(tmp));
 						}
 						catch(Exception exception){
 							exception.printStackTrace();
