@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+      <meta charset="utf-8">
+      <script src="jquery.js"></script>
+      <script src="echarts.js"></script>
+  </head>
+
+<script type="text/javascript">
+		function loadCSV(file){
+            var request = new XMLHttpRequest();
+            request.open('GET', file, false);
+            request.send();
+			var file = request.responseText;
+            return file;
+        }
+
+        function parseCSV(data,shapelet_len,loc){
+            var rows = data.split("\n");
+
+            var column = rows[loc].split(",").slice(0,shapelet_len);
+			
+			for(var i = 0; i < shapelet_len ; i++){
+				column[i] = parseFloat(column[i]).toFixed(5);
+			}
+                
+            return column;
+        }
+
+		function getOption(){
+			var file = loadCSV('scores_7.csv');
+			var d_tmp = parseCSV(file,7,Math.ceil(Math.random()*200));
+			option = {
+    title : {
+        text : 'Shapelet'
+    },
+ 
+    toolbox: {
+        show : true,
+        feature : {
+            mark : {show: true},
+            dataView : {show: true, readOnly: false},
+			magicType : {show: true, type: ['line', 'bar']},
+            restore : {show: true},
+            saveAsImage : {show: true}
+        }
+    },
+    
+    legend : {
+        data : ['series1']
+    },
+    grid: {
+        y2: 80
+    },
+    xAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    yAxis : [
+        {
+            type : 'value'
+        }
+    ],
+    series : [
+        {
+            name: 'series1',
+            type: 'line',
+            //showAllSymbol: true,
+            //symbolSize: function (value){
+            //    return Math.round(value[2]/10) + 2;
+            // },
+            data: (function () {
+                var len = 0;
+				var d = [];
+                while (len++ < 7) {
+                    d.push([
+						len-1,
+                        d_tmp[len-1]
+                    ]);
+                }
+                return d;
+            })()
+        }
+    ]
+};
+			return option;
+		
+		}
+		
+
+</script>
+<body>
+<div id = "main0">
+	<span id="main0_0" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main0_0'));
+
+		myChart.setOption(getOption());
+	</script>
+
+	<span id="main0_1" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main0_1'));
+		myChart.setOption(getOption());
+	</script>
+
+	<span id="main0_2" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main0_2'));
+		myChart.setOption(getOption());
+	</script>
+	
+<div>	
+
+<div id = "main1">
+	<span id="main1_0" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main1_0'));
+		myChart.setOption(getOption());
+	</script>
+
+	<span id="main1_1" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main1_1'));
+		myChart.setOption(getOption());
+	</script>
+
+	<span id="main1_2" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main1_2'));
+		myChart.setOption(getOption());
+	</script>
+	
+<div>	
+
+<div id = "main2">
+	<span id="main2_0" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main2_0'));
+		myChart.setOption(getOption());
+	</script>
+
+	<span id="main2_1" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main2_1'));
+		myChart.setOption(getOption());
+	</script>
+
+	<span id="main2_2" style="width: 30%;height:250px;float:left;overflow:hidden;"></span>
+	<script type="text/javascript">
+		var myChart = echarts.init(document.getElementById('main2_2'));
+		myChart.setOption(getOption());
+	</script>
+	
+<div>	
+	
+	<body>
+<html>
+        
