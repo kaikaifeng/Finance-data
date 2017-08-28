@@ -5,22 +5,29 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.text.DecimalFormat;
 
 public class Main {
 	public static void main(String[] args){
-		List<String> list = getInputList("xxxxx", "xx");
-		String[] dirs = new String[2];
-		dirs[0] = "xxxxxxx";
-		dirs[1] = "xxxxxxx";
+		List<String> list = getInputList("xxxxx", "xxxxx");
+		String[] dirs = new String[1];
+		//dirs[0] = "xxxxx";
+		dirs[0] = "xxxxx";
+		int i = 0;
 		for (String string : list) {
 			ArrayList<String> arrayList = getData(dirs, string + ".csv");
-			toFile("xxxxxxx", arrayList, string);
+			toFile("xxxxx", arrayList, string);
+			i++;
+			if(i == 100){
+				break;
+			}
 		}
 	}
 	
@@ -34,7 +41,7 @@ public class Main {
 				if(!tmp.equals("")){
 					try{
 						String[] sp = tmp.split(",");
-						list.add(title + sp[0]);
+						list.add(title + sp[1]);
 					}
 					catch(Exception exception){
 						System.out.println(tmp);
@@ -68,6 +75,7 @@ public class Main {
 		ArrayList<String> arrayList = new ArrayList<String>();
 		//arrayList.add(fileName.split("\\.")[0]);
 		Set<String>[] sets = getDataSet(dirs);
+		DecimalFormat decimalFormat = new DecimalFormat("#####.000");
 		for (int i = 0; i < sets.length; i++) {
 			Set<String> set = sets[i];
 			String dir = dirs[i];
@@ -76,7 +84,7 @@ public class Main {
 						InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
 						BufferedReader bufferedReader = new BufferedReader(inputStreamReader);){
 					String tmp = null;
-					while((tmp = bufferedReader.readLine()) != null){
+					/*while((tmp = bufferedReader.readLine()) != null){
 						if(!tmp.equals("")){
 							try{
 								arrayList.add(tmp.split(",")[5]);
@@ -85,6 +93,30 @@ public class Main {
 								System.out.println(tmp);
 								exception.printStackTrace();
 							}
+						}
+					}*/
+					boolean signal = false;
+					while(true){
+						String string = null;
+						int j = 0;
+						double sum = 0.0;
+						for(; j < 10; j++){
+							if((string = bufferedReader.readLine()) == null || string.equals("")){
+								signal = true;
+								break;
+							}
+							try{
+								sum += Double.parseDouble(string.split(",")[5]);
+							}
+							catch(Exception exception){
+								exception.printStackTrace();
+							}
+						}
+						if(j != 0 ){
+							arrayList.add(decimalFormat.format(sum / j));
+						}
+						if(signal){
+							break;
 						}
 					}
 				}
@@ -98,15 +130,15 @@ public class Main {
 	
 	public static void toFile(String dir, ArrayList<String> arrayList, String title){
 		int length = arrayList.size();
-		int n = length / 2400;
+		int n = length / 240;
 		for(int i = 0; i < n; i++){
 			try(FileOutputStream fileOutputStream = new FileOutputStream(dir + "\\" + title + "_" + i + ".csv");
 					OutputStreamWriter writer = new OutputStreamWriter(fileOutputStream, "UTF-8");
 					BufferedWriter bufferedWriter = new BufferedWriter(writer);){
 				bufferedWriter.write(title + "_" + i);
 				bufferedWriter.newLine();
-				for(int j = 0; j < 2400; j++){
-					bufferedWriter.write(arrayList.get(i * 2400 + j));
+				for(int j = 0; j < 240; j++){
+					bufferedWriter.write(arrayList.get(i * 240 + j));
 					bufferedWriter.newLine();
 				}
 			}

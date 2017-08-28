@@ -100,7 +100,8 @@ public class Paladin extends Knight{
 				OutputStream outputStream = socket.getOutputStream();
 				OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 				BufferedWriter bufferedWriter = new BufferedWriter(writer);){
-			SeriesSet set = Input.inputFromFile("sample");
+			System.out.println(args[1]);
+			SeriesSet set = Input.inputFromFile(args[1]);
 			bufferedWriter.write("ready");
 			bufferedWriter.newLine();
 			bufferedWriter.flush();
