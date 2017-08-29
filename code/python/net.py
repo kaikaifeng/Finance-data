@@ -148,7 +148,7 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
         tf.initialize_all_variables().run()
 
         validate_feed = {x: validate_input, y_: validate_labels}
-		recall_feed = validate_feed
+        recall_feed = validate_feed
         test_feed = validate_feed
 
         input_count = sess.run(total_count, feed_dict = {y_: validate_labels})
@@ -160,24 +160,22 @@ def train(data_train_positive, data_train_negative, data_validate, train_positiv
             if i % 1000 == 0:
                 validation_acc = sess.run(accuracy, feed_dict = validate_feed)
                 print "After %d trainiing step(s), validation accuracy using average model is %g" % (i, validation_acc)
-		
-                current_output = sess.run(average_y, feed_dict = validate_feed)
-                recall(validate_labels, current_output, input_count, i)
+
+		current_output = sess.run(average_y, feed_dict = validate_feed)
+		recall(validate_labels, current_output, input_count, i)
 		print sess.run(loss, feed_dict = validate_feed)
 		saver_path = saver.save(sess, 'save/fully/8_25/model.ckpt', global_step = i)
-		
-            
+
 	    xs, ys, positive_number, negative_number = get_input_data(positive_number, negative_number, input_train_positive, input_train_negative, train_positive_labels, train_negative_labels)
 	    sess.run(train_op, feed_dict = {x: xs, y_: ys})
 	    if i % 100 == 0:
-		print sess.run(loss, feed_dict = {x: xs, y_: ys})
-           
+                print sess.run(loss, feed_dict = {x: xs, y_: ys})
 
         test_acc = sess.run(accuracy, feed_dict = test_feed)
         print "After %d trainiing step(s), validation accuracy using average model is %g" % (TRAINING_STEPS, test_acc)
         current_output = sess.run(average_y, feed_dict = validate_feed)
         recall(validate_labels, current_output, input_count, TRAINING_STEPS)
-	saver_path = saver.save(sess, 'save/fully/8_25_2/model.ckpt', global_step = TRAINING_STEPS)
+        saver_path = saver.save(sess, 'save/fully/8_25_2/model.ckpt', global_step = TRAINING_STEPS)
 
 def main(argv = None):
     print get_available_gpus()
