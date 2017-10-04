@@ -8,17 +8,17 @@ public class Metric {
 	/*
 	 * no correct
 	 */
-	public static double FStatistic(HashMap<Integer, ArrayList<Integer>> map){
+	public static double FStatistic(HashMap<Integer, ArrayList<Double>> map){
 		ArrayList<Integer> integers = new ArrayList<>(map.keySet());
 		double[] averages = new double[integers.size()]; 
 		double allAverage = 0.0;
 		int allNumber = 0;
 		int[] number = new int[integers.size()];
 		for(int i = 0; i < integers.size(); i++) {
-			ArrayList<Integer> list = map.get(integers.get(i));
+			ArrayList<Double> list = map.get(integers.get(i));
 			double average = 0.0;
-			for (Integer value : list) {
-				average += value.intValue();
+			for (Double value : list) {
+				average += value.doubleValue();
 			}
 			allAverage += average;
 			averages[i] = average / list.size();
@@ -28,9 +28,9 @@ public class Metric {
 		allAverage /= allNumber;
 		double denominator = 0.0;
 		for(int i = 0; i < integers.size(); i++){
-			ArrayList<Integer> list = map.get(integers.get(i));
+			ArrayList<Double> list = map.get(integers.get(i));
 			double sum = 0.0;
-			for (Integer value : list) {
+			for (Double value : list) {
 				sum += (value.doubleValue() - averages[i]) * (value.doubleValue() - averages[i]);
 			}
 			denominator += sum;

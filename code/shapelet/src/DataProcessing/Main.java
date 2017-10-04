@@ -16,9 +16,9 @@ import java.text.DecimalFormat;
 
 public class Main {
 	public static void main(String[] args){
-		List<String> list = getInputList("xxxxx", "xxxxx");
+		/*List<String> list = getInputList("xxxxx", "xxxxx");
 		String[] dirs = new String[1];
-		//dirs[0] = "xxxxx";
+		dirs[0] = "xxxxx";
 		dirs[0] = "xxxxx";
 		int i = 0;
 		for (String string : list) {
@@ -28,7 +28,16 @@ public class Main {
 			if(i == 100){
 				break;
 			}
-		}
+		}*/
+		
+		/*File dir = new File("xxxxx"); 
+		for (File file : dir.listFiles()) {
+			if(file.getName().startsWith("train", 0)){
+				FormatChanger.changeFile(file.getAbsolutePath(), "data");
+			}
+		}*/
+		
+		FormatChanger.changeLabel("xxxxx", "");
 	}
 	
 	public static List<String> getInputList(String fileName, String title){
