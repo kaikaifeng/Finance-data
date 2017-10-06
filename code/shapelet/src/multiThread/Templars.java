@@ -25,10 +25,12 @@ public class Templars extends Knight{
 	public static final int KRUSKALWALLIS = 1;
 	
 	private int code;
+	private String describe;
 	
-	public Templars(SeriesSet seriesSet, int startNumber, int endNumber, int code) {
+	public Templars(SeriesSet seriesSet, int startNumber, int endNumber, int code, String describe) {
 		super(seriesSet, startNumber, endNumber);
 		this.code = code;
+		this.describe = describe;
 	}
 	
 	@Override
@@ -61,11 +63,14 @@ public class Templars extends Knight{
 			}
 			Collections.sort(shapeletScores);
 			ArrayList<ShapeletScore> tops = new ArrayList<ShapeletScore>();
-			for(int k = shapeletScores.size() - 1; k >= shapeletScores.size() - 1000; k--){
+			for(int k = shapeletScores.size() - 1; k >= shapeletScores.size() - 100; k--){
 				tops.add(shapeletScores.get(k));
 			}
-			LocalOutput.toFile("TimeSeries/scores_" + i + ".csv", tops);
+			LocalOutput.toFile("TimeSeries/scores_" + describe + "_" + i + ".csv", tops);
 		}
+		
+		System.out.println("sum: " + sum);
+		System.out.println("time: " + (System.currentTimeMillis() - start));
 	}
 	
 	private int[] getLabels(SeriesSet seriesSet){
@@ -87,16 +92,18 @@ public class Templars extends Knight{
 				OutputStreamWriter writer = new OutputStreamWriter(outputStream);
 				BufferedWriter bufferedWriter = new BufferedWriter(writer);){
 			SeriesSet set = Input.inputFromFile(args[1]);
-			Input.addLabel(set, args[2]);
+			Input.addOrderedLabel(set, args[2]);
 			bufferedWriter.write("ready");
 			bufferedWriter.newLine();
 			bufferedWriter.flush();
 			String string = bufferedReader.readLine();
 			String[] sp = string.split(",");
 			int startNumber = Integer.parseInt(sp[0]);
-			int endNumber = Integer.parseInt(sp[1]);
+			int endNumber = startNumber + Integer.parseInt(sp[1]);
+			System.out.println(startNumber);
+			System.out.println(endNumber);
 			for(int i = 0; i < endNumber - startNumber; i++){
-				Templars templars = new Templars(set, startNumber + i, startNumber + i, Integer.parseInt(args[3]));
+				Templars templars = new Templars(set, startNumber + i, startNumber + i, Integer.parseInt(args[3]), args[4]);
 				Thread thread = new Thread(templars);
 				thread.start();
 			}

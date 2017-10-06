@@ -8,14 +8,26 @@ public class Shapelet {
 	private int[] index;
 	private boolean sorted = false;
 	private double[] original;
+	private double[] part;
 	
 	public Shapelet(double[] list){
 		this.list = list;
 	}
 	
+	public Shapelet(double[] list, double[] part){
+		this.list = list;
+		this.part = part;
+	}
+	
 	public Shapelet(double[] list, String from){
 		this.list = list;
 		this.from = from;
+	}
+	
+	public Shapelet(double[] list, String from, double[] part){
+		this.list = list;
+		this.from = from;
+		this.part = part;
 	}
 	
 	public void setList(double[] list){
@@ -69,7 +81,7 @@ public class Shapelet {
 	
 	public StringBuffer getStringBuffer(){
 		StringBuffer stringBuffer = new StringBuffer();
-		for (double d : original) {
+		for (double d : part) {
 			stringBuffer.append(d);
 			stringBuffer.append(",");
 		}

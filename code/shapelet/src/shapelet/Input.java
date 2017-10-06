@@ -44,6 +44,7 @@ public class Input {
 				exception.printStackTrace();
 			}
 		}
+		System.out.println(set.size());
 		return set;
 	}
 	
@@ -60,17 +61,49 @@ public class Input {
 						hashMap.put(sp[0], Integer.parseInt(sp[1]));
 					}
 					catch (Exception exception){
+						System.out.println(tmp);
 						exception.printStackTrace();
 					}
 				}
 			}
 		}
 		catch (Exception exception) {
-			System.out.println(tmp);
 			exception.printStackTrace();
 		}
 		for (Serie serie : set.getSeries()) {
 			serie.setLabel(hashMap.get(serie.getName()).intValue());
+		}
+		return set;
+	}
+	
+	public static SeriesSet addOrderedLabel(SeriesSet set, String labelFile){
+		int[] labels = new int[set.size()];
+		String tmp = null;
+		int i = 0;
+		try(FileInputStream fileInputStream = new FileInputStream(labelFile);
+				InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");
+				BufferedReader bufferedReader = new BufferedReader(inputStreamReader);){
+			while((tmp = bufferedReader.readLine()) != null){
+				if(tmp.equals("")){
+					break;
+				}
+				try{
+					labels[i] = Integer.parseInt(tmp);
+					i++;
+				}
+				catch(Exception exception){
+					System.out.println(tmp);
+					exception.printStackTrace();
+				}
+			}
+		}
+		catch (Exception exception) {
+			exception.printStackTrace();
+		}
+		i = 0;
+		for (Serie serie : set.getSeries()) {
+			serie.setLabel(labels[i]);
+			i++;
 		}
 		return set;
 	}

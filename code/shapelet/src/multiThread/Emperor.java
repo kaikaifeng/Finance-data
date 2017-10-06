@@ -131,7 +131,7 @@ public class Emperor implements Runnable{
 			}
 		}
 		Thread logThread = new Thread(new runLog(number, logServer));
-		logThread.start();
+		//logThread.start();
 		
 		while(!allTrue(finished)){
 			if(position < number){

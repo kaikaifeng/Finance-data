@@ -37,7 +37,7 @@ public class Main {
 			}
 		}*/
 		
-		FormatChanger.changeLabel("xxxxx", "");
+		FormatChanger.changeLabel("xxxxx", "xxxxx");
 	}
 	
 	public static List<String> getInputList(String fileName, String title){
