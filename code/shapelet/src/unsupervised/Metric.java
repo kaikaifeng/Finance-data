@@ -17,15 +17,19 @@ public class Metric {
 		for(int i = 0; i < integers.size(); i++) {
 			ArrayList<Double> list = map.get(integers.get(i));
 			double average = 0.0;
+			//System.out.println("integer:" + integers.get(i).intValue());
 			for (Double value : list) {
 				average += value.doubleValue();
+				//System.out.println(value.doubleValue());
 			}
 			allAverage += average;
 			averages[i] = average / list.size();
+			//System.out.println("average:" + i + " " + averages[i]);
 			number[i] = list.size();
 			allNumber += number[i];
 		}
 		allAverage /= allNumber;
+		//System.out.println("allAverage:" + allAverage);
 		double denominator = 0.0;
 		for(int i = 0; i < integers.size(); i++){
 			ArrayList<Double> list = map.get(integers.get(i));
@@ -36,11 +40,13 @@ public class Metric {
 			denominator += sum;
 		}
 		denominator /= allNumber - integers.size();
+		//System.out.println("denominator:" + denominator);
 		double numerator = 0.0;
 		for(int i = 0; i < integers.size(); i++){
 			numerator += (averages[i] - allAverage) * (averages[i] - allAverage);
 		}
 		numerator /= integers.size() - 1;
+		//System.out.println("numerator:" + numerator);
 		return numerator / denominator;
 	}
 	
@@ -101,7 +107,7 @@ public class Metric {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}*/
-		for(int i = 0; i < labels.length; i++) {
+		for(int i = 1; i <= labels.length; i++) {
 			if(!map.containsKey(Integer.valueOf(tmpLabels[i]))){
 				map.put(Integer.valueOf(tmpLabels[i]), new ArrayList<Integer>());
 			}
@@ -122,7 +128,7 @@ public class Metric {
 		System.arraycopy(labels, 0, tmpLabels, 1, labels.length);
 		System.arraycopy(values, 0, tmpValues, 1, labels.length);
 		Support.outHeapSort(tmpValues, tmpLabels);
-		for(int i = 0; i < labels.length; i++) {
+		for(int i = 1; i <= labels.length; i++) {
 			if(!map.containsKey(Integer.valueOf(tmpLabels[i]))){
 				map.put(Integer.valueOf(tmpLabels[i]), new ArrayList<Double>());
 			}

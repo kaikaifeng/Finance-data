@@ -59,6 +59,7 @@ public class Templars extends Knight{
 					score = Metric.KruskalWallis(Metric.dealLabelRank(labels, subsequenceDists));
 				}
 				shapeletScores.add(new ShapeletScore(shapelet, score));
+				//System.out.println(shapeletScores.get(shapeletScores.size() - 1).toString());
 				j++;
 			}
 			Collections.sort(shapeletScores);
@@ -66,7 +67,7 @@ public class Templars extends Knight{
 			for(int k = shapeletScores.size() - 1; k >= shapeletScores.size() - 100; k--){
 				tops.add(shapeletScores.get(k));
 			}
-			LocalOutput.toFile("TimeSeries/scores_" + describe + "_" + i + ".csv", tops);
+			LocalOutput.toFile("xxxxx\\TimeSeries/scores_" + describe + "_" + i + ".csv", tops);
 		}
 		
 		System.out.println("sum: " + sum);

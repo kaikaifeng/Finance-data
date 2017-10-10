@@ -33,11 +33,19 @@ public class Main {
 		/*File dir = new File("xxxxx"); 
 		for (File file : dir.listFiles()) {
 			if(file.getName().startsWith("train", 0)){
-				FormatChanger.changeFile(file.getAbsolutePath(), "data");
+				FormatChanger.changeFile(file.getAbsolutePath(), "xxxxx");
 			}
 		}*/
 		
-		FormatChanger.changeLabel("xxxxx", "xxxxx");
+		//FormatChanger.changeLabel("xxxxx", "");
+		
+		/*File oldDir = new File("xxxxx");
+		File[] files = oldDir.listFiles();
+		for (File file : files) {
+			Sampling.fromFiles(file.getAbsolutePath(), "xxxxx" + File.separator + file.getName(), 100);
+		}*/
+		
+		Sampling.samplingLabels("xxxxx", "xxxxx", "xxxxx");
 	}
 	
 	public static List<String> getInputList(String fileName, String title){

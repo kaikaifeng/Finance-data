@@ -16,6 +16,7 @@ public class Input {
 		}
 		File[] files = inputDir.listFiles();
 		for (File file : files) {
+			System.out.println(file.getName());
 			String tmp = null;
 			try(FileInputStream fileInputStream = new FileInputStream(file);
 					InputStreamReader inputStreamReader = new InputStreamReader(fileInputStream, "UTF-8");

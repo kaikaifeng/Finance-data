@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 
 public class SeriesSet {
+	public static double epsilon = 0.00001;
 	private ArrayList<Serie> series;
 	private HashMap<Integer, ArrayList<Shapelet>> all;
 	
@@ -71,7 +72,7 @@ public class SeriesSet {
 		mu = sumMu / length;
 		sigma = sumSigma / length;
 		sigma -= mu * mu;
-		sigma = Math.sqrt(sigma);
+		sigma = Math.sqrt(sigma + epsilon);
 		let = new double[length];
 		for(int i = 0; i < length; i++){
 			let[i] = list[i];
@@ -89,7 +90,7 @@ public class SeriesSet {
 			mu = sumMu / length;
 			sigma = sumSigma / length;
 			sigma -= mu * mu;
-			sigma = Math.sqrt(sigma);
+			sigma = Math.sqrt(sigma + epsilon);
 			let = new double[length];
 			for(int j = 0; j < length; j++){
 				let[j] = list[i + j + 1];
@@ -112,7 +113,7 @@ public class SeriesSet {
 		mu /= list.length;
 		sigma /= list.length;
 		sigma -= mu * mu;
-		sigma = Math.sqrt(sigma);
+		sigma = Math.sqrt(sigma + epsilon);
 		for(int i = 0 ;i < list.length; i++){
 			list[i] -= mu;
 			list[i] /= sigma;

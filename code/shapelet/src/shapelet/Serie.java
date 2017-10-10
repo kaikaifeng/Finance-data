@@ -50,7 +50,7 @@ public class Serie {
 		double mu = sumMu / F.length;
 		double sigma = sumSigma / F.length;
 		sigma -= mu * mu;
-		sigma = Math.sqrt(sigma);
+		sigma = Math.sqrt(sigma + SeriesSet.epsilon);
 		double dist = dist(F, index, 0, currentBest, mu, sigma);
 		if(dist < currentBest){
 			currentBest = dist;
@@ -63,7 +63,7 @@ public class Serie {
 			mu = sumMu / F.length;
 			sigma = sumSigma / F.length;
 			sigma -= mu * mu;
-			sigma = Math.sqrt(sigma);
+			sigma = Math.sqrt(sigma + SeriesSet.epsilon);
 			dist = dist(F, index, i + 1, currentBest, mu, sigma);
 			if(dist < currentBest){
 				currentBest = dist;
@@ -141,7 +141,7 @@ public class Serie {
 		double mu = sumMu / F.length;
 		double sigma = sumSigma / F.length;
 		sigma -= mu * mu;
-		sigma = Math.sqrt(sigma);
+		sigma = Math.sqrt(sigma + SeriesSet.epsilon);
 		double dist = betterDist(F, 0, currentBest, mu, sigma);
 		if(dist < currentBest){
 			currentBest = dist;
@@ -154,7 +154,7 @@ public class Serie {
 			mu = sumMu / F.length;
 			sigma = sumSigma / F.length;
 			sigma -= mu * mu;
-			sigma = Math.sqrt(sigma);
+			sigma = Math.sqrt(sigma + SeriesSet.epsilon);
 			dist = betterDist(F, i + 1, currentBest, mu, sigma);
 			if(dist < currentBest){
 				currentBest = dist;
